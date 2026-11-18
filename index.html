@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Laboratorios interactivos de Matemática, Unidad 2: ecuaciones, inecuaciones y números complejos.">
+  <title>Unidad 2 · Laboratorios de Matemática</title>
+  <style>
+    :root{--navy:#081528;--panel:#101f35;--border:#253b56;--text:#eaf2fd;--muted:#a9bacd;--cyan:#63d4fa;--green:#77edc6}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 10% 0%,#183957 0,transparent 36%),radial-gradient(circle at 100% 10%,#122a48 0,transparent 45%),var(--navy);min-height:100vh}
+    .wrap{max-width:1200px;padding:44px 22px 36px;margin:0 auto}
+    .eyebrow{font-size:12px;letter-spacing:.18em;font-weight:800;color:var(--green);text-transform:uppercase}
+    h1{font-size:clamp(2rem,5vw,3.6rem);margin:12px 0;line-height:1.1;letter-spacing:-.045em}
+    .intro{color:var(--muted);line-height:1.65;max-width:800px;font-size:1.07rem;margin-bottom:30px}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .lab{position:relative;display:flex;flex-direction:column;min-height:326px;background:linear-gradient(145deg,rgba(20,42,65,.95),rgba(12,29,48,.96));border:1px solid var(--border);border-radius:22px;padding:23px 25px;color:inherit;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s;overflow:hidden}
+    .lab:hover,.lab:focus-visible{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 14px 32px #0004;outline:none}
+    .lab-top{display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;z-index:1}
+    .number{color:var(--cyan);font-size:13px;letter-spacing:.16em;font-weight:800}
+    .tag{font-size:11px;color:#b9e9f8;background:#17425a;border:1px solid #265c74;border-radius:30px;padding:5px 11px;text-align:center}
+    .mark{font-size:64px;line-height:1;color:#64d8fd;opacity:.25;position:absolute;right:28px;top:72px;font-weight:300}
+    h2{font-size:clamp(1.2rem,2.1vw,1.55rem);margin:56px 0 12px;max-width:96%;letter-spacing:-.025em;line-height:1.3}
+    .lab p{margin:0 0 21px;color:var(--muted);line-height:1.58;font-size:.94rem}
+    .open{margin-top:auto;color:var(--green);font-weight:750;font-size:14px}.open span{padding-left:7px}
+    footer{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:22px;margin-top:38px;color:var(--muted);font-size:12px}
+    .credito-autoria{font-size:11px;font-weight:600;color:#9fbbd5;text-align:right}
+    @media(max-width:950px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lab{min-height:285px}}
+    @media(max-width:680px){.wrap{padding:30px 15px}.grid{grid-template-columns:1fr}.lab{min-height:235px;padding:20px}h2{margin-top:36px}footer{justify-content:center;text-align:center}.credito-autoria{text-align:center}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">Matemática · Unidad 2 · Números reales y complejos</div>
+    <h1>Laboratorios de Matemática</h1>
+    <p class="intro">Tres herramientas interactivas para desarrollar ecuaciones, analizar inecuaciones y explorar números complejos. Introduce tus propios valores, examina los procedimientos y relaciona los resultados con sus representaciones gráficas. Selecciona un laboratorio para comenzar.</p>
+    <section class="grid" aria-label="Índice de laboratorios de la Unidad 2">
+      <a class="lab" href="LAB_04_Desarrollador_de_Ecuaciones.html" aria-label="Abrir Desarrollador de ecuaciones">
+        <div class="lab-top"><span class="number">LAB 04</span><span class="tag">Ecuaciones</span></div>
+        <div class="mark" aria-hidden="true">=</div>
+        <h2>Desarrollador de ecuaciones</h2>
+        <p>Introduce ecuaciones lineales, cuadráticas o polinómicas y examina sus soluciones mediante procedimientos algebraicos y gráficas.</p>
+        <span class="open">Abrir laboratorio <span aria-hidden="true">↗</span></span>
+      </a>
+      <a class="lab" href="LAB_05_Desarrollador_de_Inecuaciones.html" aria-label="Abrir Desarrollador de inecuaciones">
+        <div class="lab-top"><span class="number">LAB 05</span><span class="tag">Inecuaciones</span></div>
+        <div class="mark" aria-hidden="true">≤</div>
+        <h2>Desarrollador de inecuaciones</h2>
+        <p>Procesa inecuaciones lineales, polinómicas y racionales; interpreta intervalos, restricciones y tablas de signos.</p>
+        <span class="open">Abrir laboratorio <span aria-hidden="true">↗</span></span>
+      </a>
+      <a class="lab" href="LAB_06_Explorador_de_Numeros_Complejos.html" aria-label="Abrir Explorador de números complejos">
+        <div class="lab-top"><span class="number">LAB 06</span><span class="tag">Números complejos</span></div>
+        <div class="mark" aria-hidden="true">ℂ</div>
+        <h2>Explorador de números complejos</h2>
+        <p>Explora las formas binómica, polar y exponencial, representa números en el plano y desarrolla sus operaciones.</p>
+        <span class="open">Abrir laboratorio <span aria-hidden="true">↗</span></span>
+      </a>
+    </section>
+    <footer><span>Laboratorios 04–06 · Matemática · Unidad 2</span><span class="credito-autoria">Desarrollado por: Ing. Carlos R. Guffantte S., Mgs.</span></footer>
+  </main>
+</body>
+</html>
