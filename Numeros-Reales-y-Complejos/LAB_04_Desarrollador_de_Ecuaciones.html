@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAB 04 · Desarrollador de ecuaciones</title>
+<style>
+:root{--bg:#081120;--panel:#11243a;--line:#2d4965;--text:#eaf3ff;--muted:#adc5db;--cyan:#63d9ed;--green:#93e5c0;--red:#ffaaa5;--amber:#ffd18c;--purple:#c1b4ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 75% 0,#153857,transparent 36%),var(--bg);font:15px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--text)}header{padding:19px clamp(14px,3vw,40px);border-bottom:1px solid var(--line)}.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:1.7px}h1{font-size:clamp(23px,3vw,34px);margin:4px 0}header p{margin:0;color:var(--muted)}main{max-width:1440px;margin:auto;padding:16px clamp(12px,3vw,40px) 35px}.panel{background:linear-gradient(145deg,#132840,#0d1c30);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0}.panel h2{margin:0 0 10px;font-size:17px}.muted{color:var(--muted)}.small{font-size:12px}.input-panel{margin-bottom:14px}.entry-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:9px}.entry{min-width:0;width:100%;font:600 19px Cambria,'Times New Roman',serif;color:white;background:#07192b;border:1px solid #4e6d88;border-radius:10px;padding:12px 14px;min-height:48px}.btn{border-radius:10px;min-height:44px;border:1px solid #45617e;color:var(--text);background:#1c3650;padding:9px 14px;cursor:pointer;font:700 13px system-ui}.btn.primary{background:#16697c;border-color:#69ddec;color:white}.btn:hover{filter:brightness(1.14)}button:focus-visible,input:focus-visible{outline:3px solid #aceefa;outline-offset:2px}.examples{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:12px}.example{background:#172d45;border:1px solid #355673;border-radius:9px;color:#dcecf9;padding:7px 10px;cursor:pointer;min-height:38px;font:600 12px system-ui}.hint{margin:10px 0 0;color:#aac4d9;font-size:12px;line-height:1.6}.error{color:#ffd0cb;font-size:13px;margin-top:10px}.error:empty{display:none}.keyboard-block{margin-top:14px;padding:12px;background:#0b2034;border:1px solid #31536d;border-radius:13px}.keyboard-heading{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;letter-spacing:1.1px;color:#a7e7f0;font-weight:850}.math-keyboard{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px}.key{min-width:0;min-height:42px;padding:6px 3px;border:1px solid #47647e;border-radius:9px;background:#1b3650;color:#f3f9ff;font:700 17px Cambria,'Times New Roman',serif;cursor:pointer}.key.utility{background:#26334c;color:#fed9a8}.key.relation-key{background:#15526a;border-color:#58b5cc}.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:start}.render{background:#07192b;border:1px solid #35536d;border-radius:12px;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;min-height:100px;overflow-wrap:anywhere;font:700 clamp(23px,2.8vw,33px) Cambria,'Times New Roman',serif}.eqsign{color:#a7e9f5}.pill{display:inline-block;border:1px solid #365d73;border-radius:30px;padding:5px 10px;margin:11px 0;font-size:12px;color:#a7e7ed;background:#15324a;font-weight:700}.metric-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{border:1px solid #2d4c67;border-radius:12px;background:#132c43;padding:11px;min-width:0}.metric small{color:#b8cbdf;display:block;font-size:11px}.metric strong{font-weight:750;font-size:14px;overflow-wrap:anywhere;display:block;margin-top:4px}.solution{margin:10px 0;background:#10362e;border:1px solid #498e78;border-radius:12px;padding:15px;font:700 clamp(17px,2vw,24px) Cambria,'Times New Roman',serif;overflow-wrap:anywhere}.plot{display:block;width:100%;height:auto;margin-top:10px;background:#0b1c30;border:1px solid #35516c;border-radius:12px}.legend{display:flex;gap:16px;flex-wrap:wrap;color:#b3cee0;font-size:12px;margin:8px 0}.legend b{color:var(--green)}.procedure-panel{margin-top:14px}.procedure-intro{font-size:12px;color:#b2cadb;margin:3px 3px 13px;line-height:1.6}.steps{display:grid;gap:10px;list-style:none;padding:0;counter-reset:labstep}.steps li{counter-increment:labstep;margin:0;padding:12px 13px;border:1px solid #2d4c66;border-left:3px solid #5ccbdc;border-radius:11px;background:#10243a;min-width:0}.steps li strong{display:flex;align-items:center;gap:8px;font-size:13px;color:#a5eaf3}.steps li strong:before{content:counter(labstep,decimal-leading-zero);display:inline-flex;justify-content:center;align-items:center;min-width:27px;height:27px;background:#1c4560;border-radius:8px;color:#c5f5fa;font:800 11px system-ui}.mathline{white-space:pre-line;display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:7px;margin:10px 0;padding:12px 11px;background:#091a2b;border:1px solid #2d5067;border-radius:10px;font:700 clamp(18px,2.2vw,23px) Cambria,'Times New Roman',serif;color:#eff9ff;line-height:1.65;overflow-wrap:anywhere}.mathline.emphasis{border-color:#47937e;background:#10332f}.step-explain{margin:8px 2px 3px;color:#bdd1e2;font-size:12px;line-height:1.65}.check{margin-top:14px}.checkform{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.checkform input{background:#07192b;border:1px solid #4c6a84;color:white;padding:9px 12px;border-radius:9px;width:125px;min-height:44px;font:16px system-ui}.checkresult{padding:11px 0;color:#b9dfec;min-height:24px}.hidden{display:none!important}.footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:18px;font-size:11px;color:#9fbbd5}.scope-note{margin-top:12px;padding:11px 13px;border:1px solid #365772;border-radius:10px;background:#10263b;color:#b7cfe0;font-size:12px}.scope-note b{color:#9ce9f2}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.panel{padding:14px}.math-keyboard{grid-template-columns:repeat(7,minmax(0,1fr))}}@media(max-width:560px){.entry-row{grid-template-columns:1fr 1fr}.entry{grid-column:1/-1;font-size:17px}.entry-row .btn{width:100%}.render{font-size:24px;padding:11px 8px}.metric-row{grid-template-columns:1fr 1fr}.math-keyboard{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.key{min-height:45px;font-size:18px}.mathline{font-size:18px;padding:10px 8px}.steps li{padding:10px}}@media(orientation:landscape) and (max-width:850px) and (min-width:580px){.layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}.panel{padding:11px}.render{font-size:20px}}
+
+/* La lectura conserva la estructura escrita, con tipografía matemática. */
+#math.read-original{gap:0;flex-wrap:nowrap;justify-content:center;overflow-x:auto;overflow-y:hidden;padding:18px 15px;scrollbar-width:thin;white-space:pre;}
+#math .read-side{display:inline-flex;align-items:center;white-space:nowrap;line-height:1.65;font-variant-numeric:lining-nums;}
+#math .read-equals{display:inline-block;color:#8ee4f1;padding:0 .55em;white-space:nowrap;}
+#math sup{font-size:.62em;vertical-align:super;line-height:0;}
+#math .read-frac{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:stretch;text-align:center;line-height:1.24;font-size:.87em;min-width:1.2em;margin:0 .13em;white-space:nowrap}
+#math .read-frac-num{padding:0 .22em .13em;border-bottom:2px solid #b8e7ff;display:block}
+#math .read-frac-den{display:block;padding:.13em .22em 0}
+#math .read-group{display:inline-flex;align-items:center;white-space:nowrap}
+#math .read-op{white-space:pre}
+.ruffini-wrap{overflow-x:auto;margin:12px 0 8px;border-radius:11px;border:1px solid #355873;background:#0b1d31;padding:12px}
+.ruffini-table{border-collapse:separate;border-spacing:0;table-layout:auto;margin:auto;text-align:center;font:700 clamp(14px,1.7vw,19px) Cambria,serif;color:#eaf7ff}
+.ruffini-table td{padding:7px clamp(8px,1.5vw,16px);min-width:52px;white-space:nowrap}
+.ruffini-table .r-root{color:#a2e8f1;border-right:2px solid #70bed0;font-weight:800}
+.ruffini-table .r-coefs td:not(:first-child){color:#f3faff}
+.ruffini-table .r-products td:not(:first-child){color:#ffcf98}
+.ruffini-table .r-bottom td:not(:first-child){border-top:2px solid #70bed0;color:#a0ecc7}
+.ruffini-table .r-bottom td:last-child{color:#ffdc8d;background:#1d3645;border-radius:0 0 8px 0}
+.ruffini-detail{margin:12px 0 4px;display:grid;gap:6px}
+.ruffini-detail div{font-size:12px;color:#ccdeed;padding:7px 9px;background:#10263c;border-radius:7px;border-left:2px solid #507d96}
+.ruffini-detail b{color:#9ee9f1}
+.ruffini-meaning{font-size:12px;color:#adcadc;margin-top:8px}
+@media(max-width:560px){#math.read-original{justify-content:flex-start;font-size:clamp(18px,5.4vw,26px)}}
+
+/* Fracciones verticales para lectura y desarrollo; las líneas no alteran los cálculos. */
+.mathline .math-expression{display:block;min-width:0;width:100%;line-height:1.8;overflow-wrap:anywhere}
+.mathline .math-expression + .math-expression{border-top:1px solid #29435b;padding-top:9px;margin-top:8px}
+.mathline .math-frac{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:stretch;text-align:center;line-height:1.2;font-size:.92em;min-width:1.15em;margin:0 .16em;white-space:nowrap}
+.mathline .math-frac .math-num{border-bottom:2px solid #b8e7ff;padding:1px .2em 4px}
+.mathline .math-frac .math-den{padding:4px .2em 1px}
+.mathline sup{font-size:.65em;vertical-align:super;line-height:0}
+.mathline .math-frac .math-num,.mathline .math-frac .math-den{display:block}
+.ruffini-process{display:grid;gap:9px;margin-top:12px}
+.ruffini-process .r-action{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;background:#10263c;border:1px solid #2d4d67;border-left:3px solid #56cad9;border-radius:9px;padding:9px 12px}
+.ruffini-process .r-action-title{font:800 12px system-ui;color:#b3eff4}
+.ruffini-process .r-action-math{font:700 clamp(15px,1.8vw,19px) Cambria,serif;color:#fff;overflow-wrap:anywhere}
+.ruffini-process .r-action-note{font:400 12px/1.5 system-ui;color:#b5cee0}
+.ruffini-table .r-bottom td:not(:first-child){color:#9debc6}
+.ruffini-table .r-bottom td:last-child{color:#a4f1c3}
+@media(max-width:560px){.ruffini-table td{min-width:43px;padding:7px 9px}.mathline .math-frac{font-size:.85em}}
+/* Cuaderno adaptable: dos pasos por fila cuando hay espacio suficiente. */
+@media(min-width:900px){
+  .procedure-panel .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+  .procedure-panel .steps>li.wide-step{grid-column:1/-1}
+  .procedure-panel .steps>li:not(.wide-step) .mathline{font-size:clamp(17px,1.65vw,21px)}
+}
+@media(max-width:899px){.procedure-panel .steps{grid-template-columns:1fr}}
+.procedure-panel .steps>li{min-width:0}
+.procedure-panel .steps>li.wide-step .ruffini-wrap{max-width:100%}
+.procedure-panel .steps>li .mathline{min-width:0}
+</style>
+<style id="graph-interaction-styles">
+.graph-expressions{display:grid;gap:8px;margin:10px 0 8px}.graph-identity{display:flex;gap:9px;align-items:baseline;padding:8px 11px;border:1px solid #2c4e69;border-radius:10px;background:#0c2135;min-width:0;color:#e7f3ff;font:16px Cambria,'Times New Roman',serif;overflow-wrap:anywhere}.graph-identity strong{font:700 12px system-ui;color:#a9c9de}.graph-color{display:inline-block;flex:none;width:20px;height:3px;vertical-align:middle}.graph-color.left{background:#63d9ed}.graph-color.right{background:#c1b4ff}.graph-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.graph-btn{border:1px solid #45617e;background:#1c3650;color:#f1faff;border-radius:9px;min-height:36px;padding:6px 10px;font:700 12px system-ui;cursor:pointer}.graph-btn:hover{background:#275270}.graph-help{font-size:11px;color:#b0c8dc;margin:8px 1px 0}.plot{touch-action:none;cursor:grab;user-select:none}.plot:active{cursor:grabbing}
+
+/* Leyenda integrada dentro del área gráfica; no interfiere con el arrastre o zoom. */
+.graph-viewport{position:relative;min-width:0;margin-top:10px}
+.graph-viewport .plot{margin-top:0}
+.graph-viewport .graph-expressions{position:absolute;top:12px;left:12px;right:12px;z-index:2;width:max-content;max-width:calc(100% - 24px);display:grid;gap:5px;margin:0;padding:9px 11px;background:rgba(6,20,35,.91);border:1px solid rgba(109,155,188,.58);border-radius:11px;box-shadow:0 6px 18px #0006;pointer-events:none;overflow-wrap:anywhere}
+.graph-viewport .graph-identity{background:transparent;border:0;border-radius:0;padding:0;display:flex;align-items:baseline;gap:8px;font:600 14px Cambria,'Times New Roman',serif;line-height:1.4;color:#edf8ff}
+.graph-viewport .graph-identity strong{font:700 11px system-ui;color:#c3dbee}
+.graph-viewport .graph-color{width:19px;height:3px;align-self:center}
+.graph-intersection-key{display:flex;align-items:center;gap:8px;font:600 11px system-ui;color:#d8eafb;margin-top:2px}
+.graph-intersection-dot{width:9px;height:9px;flex:none;border-radius:50%;background:var(--amber)}
+@media(max-width:560px){.graph-viewport .graph-expressions{top:7px;left:7px;max-width:calc(100% - 14px);padding:7px 8px;gap:3px}.graph-viewport .graph-identity{font-size:12px}.graph-viewport .graph-identity strong,.graph-intersection-key{font-size:10px}}
+
+/* Notación matemática refinada en leyenda interior: sin etiquetas adicionales. */
+.graph-viewport .graph-expressions{gap:7px;padding:12px 14px;border:1px solid rgba(127,168,199,.45);background:rgba(7,22,39,.93);box-shadow:0 10px 28px rgba(0,0,0,.36);backdrop-filter:blur(7px);width:fit-content;max-width:calc(100% - 24px)}
+.graph-viewport .graph-identity{display:grid;grid-template-columns:20px minmax(0,1fr);align-items:center;gap:10px;font:500 clamp(14px,1.55vw,18px)/1.65 Cambria,'Cambria Math','Times New Roman',serif;letter-spacing:.015em;color:#f0f8ff;min-width:0}
+.graph-viewport .graph-identity>span:last-child{display:block;min-width:0;overflow-wrap:anywhere}
+.graph-viewport .graph-color{height:4px;width:20px;border-radius:8px;align-self:center;box-shadow:0 0 9px rgba(135,210,240,.16)}
+.graph-viewport .read-side{display:inline-flex;flex-wrap:wrap;align-items:center;gap:0;vertical-align:middle;line-height:1.65}
+.graph-viewport .read-op{white-space:pre;color:#d8e8f5}
+.graph-viewport .read-frac{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:stretch;text-align:center;line-height:1.15;font-size:.88em;min-width:1.15em;margin:0 .17em;white-space:nowrap}
+.graph-viewport .read-frac-num{display:block;border-bottom:1.5px solid currentColor;padding:0 .24em .16em}
+.graph-viewport .read-frac-den{display:block;padding:.17em .24em 0}
+.graph-viewport sup{font-size:.68em;line-height:0;vertical-align:super}
+@media(max-width:560px){.graph-viewport .graph-expressions{max-width:calc(100% - 14px);padding:9px 10px;gap:6px}.graph-viewport .graph-identity{grid-template-columns:15px minmax(0,1fr);gap:8px;font-size:clamp(12px,3.1vw,15px)}.graph-viewport .graph-color{width:15px}}
+</style>
+<style id="keyboard-layout-order">
+/* Teclado: operadores arriba; 0–9 y decimal abajo; navegación a la derecha. */
+.math-keyboard{display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:7px;align-items:stretch}
+.keyboard-main{min-width:0;display:flex;flex-direction:column;gap:7px}
+.keyboard-operators{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px}
+.keyboard-numbers{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px}
+.keyboard-navigation{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:6px}
+.keyboard-navigation .key{min-height:31px}
+@media(max-width:850px){.math-keyboard{grid-template-columns:minmax(0,1fr) 52px}.keyboard-operators{grid-template-columns:repeat(5,minmax(0,1fr))}.keyboard-numbers{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-width:560px){.math-keyboard{grid-template-columns:minmax(0,1fr) 46px;gap:5px}.keyboard-main{gap:5px}.keyboard-operators,.keyboard-numbers{gap:5px}.keyboard-navigation{gap:5px}}
+</style><style id="navegacion-indice-unidad-2">
+/* Navegación relativa compatible con GitHub Pages y archivos locales. */
+.lab-navigation{max-width:1440px;margin:0 auto;padding:13px clamp(12px,3vw,40px) 0;display:flex;align-items:center;justify-content:flex-start}
+.lab-navigation .return-index,.lab-footer-navigation .return-index{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:10px 15px;border-radius:11px;border:1px solid #386784;background:linear-gradient(180deg,#173c54,#10283e);color:#c8f3fc;text-decoration:none;font:750 13px system-ui,-apple-system,'Segoe UI',sans-serif;transition:background .2s,transform .2s}
+.lab-navigation .return-index:hover,.lab-footer-navigation .return-index:hover{background:#20516b;transform:translateY(-1px)}
+.lab-navigation .return-index:focus-visible,.lab-footer-navigation .return-index:focus-visible{outline:3px solid #8de7f0;outline-offset:3px}
+.lab-footer-navigation{display:flex;justify-content:flex-start;margin:18px 0 3px}
+@media(max-width:560px){.lab-navigation{padding:10px 11px 0}.lab-navigation .return-index,.lab-footer-navigation .return-index{font-size:12px}}
+</style></head>
+<body>
+<header><div class="eyebrow">LABORATORIO INTERACTIVO · MATEMÁTICA · UNIDAD 2</div><h1>LAB 04 · Desarrollador de ecuaciones</h1><p>Ecuaciones lineales, cuadráticas y polinómicas de grado superior.</p></header><nav class="lab-navigation" aria-label="Navegación del laboratorio"><a class="return-index" href="index.html">← Regresar al índice de la Unidad 2</a></nav>
+<main>
+<section class="panel input-panel">
+<h2>Escribe una ecuación</h2>
+<form id="form" class="entry-row"><input id="expr" class="entry" value="2x + 7 = 19" autocomplete="off" spellcheck="false" aria-label="Ecuación"><button class="btn primary" type="submit">Resolver</button><button class="btn" id="clear" type="button">Limpiar</button></form>
+<p class="hint">Formato admitido: usa <b>x</b> como variable. Puedes escribir <b>2x</b>, <b>3(x−2)</b>, <b>x^2</b>, <b>(2x+1)/3</b> y términos en ambos lados. La división se admite entre constantes. Se resuelven polinomios de grado hasta 6; utiliza ^ para las potencias (por ejemplo, x^3).</p>
+<div id="error" class="error"></div>
+<div class="examples"><span class="small muted">Generar ejercicio:</span><button class="example" title="Generar una ecuación nueva" data-e="5x - 8 = 2x + 13">Lineal</button><button class="example" title="Generar una ecuación nueva" data-e="(2x + 1)/3 = (x - 4)/2">Lineal con fracciones</button><button class="example" title="Generar una ecuación nueva" data-e="x^2 - 5x + 6 = 0">Cuadrática</button><button class="example" title="Generar una ecuación nueva" data-e="4x^2 - 9 = 0">Diferencia de cuadrados</button><button class="example" title="Generar una ecuación nueva" data-e="x^3 + 2x^2 - x - 2 = 0">Agrupación</button><button class="example" title="Generar una ecuación nueva" data-e="x^3 - 6x^2 + 11x - 6 = 0">Ruffini</button><button class="example" title="Generar una ecuación nueva" data-e="x^4 - 5x^2 + 4 = 0">Bicuadrática</button><button class="example" title="Generar una ecuación nueva" data-e="8x^3 - 125 = 0">Diferencia de cubos</button><button class="example" title="Generar una ecuación nueva" data-e="8x^3 + 125 = 0">Suma de cubos</button></div>
+<div class="keyboard-block"><div class="keyboard-heading"><span>TECLADO MATEMÁTICO</span><span class="small">Inserta símbolos en la posición del cursor</span></div>
+<div class="math-keyboard">
+  <div class="keyboard-main">
+    <div class="keyboard-operators"><button type="button" class="key" data-insert="x">x</button><button type="button" class="key" data-insert="^2">x²</button><button type="button" class="key" data-insert="^" title="Introduce una potencia: pulsa y escribe el exponente (por ejemplo, 4)">xⁿ</button><button type="button" class="key" data-template="()" data-cursor="1" title="Insertar los dos paréntesis y escribir dentro">( )</button><button type="button" class="key" data-insert="+">+</button><button type="button" class="key" data-insert="-">−</button><button type="button" class="key" data-insert="*">×</button><button type="button" class="key" data-insert="/">÷</button><button type="button" class="key" data-template="()/()" data-cursor="1" title="Fracción: coloca el cursor en el numerador">▰/▱</button><button type="button" class="key relation-key" data-insert="=">=</button></div>
+    <div class="keyboard-numbers"><button type="button" class="key" data-insert="0">0</button><button type="button" class="key" data-insert="1">1</button><button type="button" class="key" data-insert="2">2</button><button type="button" class="key" data-insert="3">3</button><button type="button" class="key" data-insert="4">4</button><button type="button" class="key" data-insert="5">5</button><button type="button" class="key" data-insert="6">6</button><button type="button" class="key" data-insert="7">7</button><button type="button" class="key" data-insert="8">8</button><button type="button" class="key" data-insert="9">9</button><button type="button" class="key" data-insert=".">.</button></div>
+  </div>
+  <div class="keyboard-navigation" aria-label="Movimiento y borrado del cursor"><button type="button" class="key utility" id="key-left" aria-label="Mover el cursor a la izquierda">←</button><button type="button" class="key utility" id="key-right" aria-label="Mover el cursor a la derecha">→</button><button type="button" class="key utility" id="key-back" aria-label="Borrar un carácter hacia atrás">⌫</button></div>
+</div></div>
+<div class="scope-note"><b>Tipos de ecuaciones:</b> lineales (primer grado), cuadráticas (segundo grado) y polinómicas de grado superior (hasta sexto grado).</div>
+</section>
+<div id="output" class="hidden">
+<div class="layout">
+<section class="panel"><h2>Lectura algebraica</h2><div id="math" class="render"></div><div id="type" class="pill"></div><div class="metric-row"><div class="metric"><small>Forma reducida</small><strong id="reduced"></strong></div><div class="metric"><small>Grado</small><strong id="disc">No aplica</strong></div></div><div id="solution" class="solution"></div><div class="check"><h2>Comprobar un valor</h2><form id="checkform" class="checkform"><input id="xcheck" inputmode="decimal" placeholder="x ="><button class="btn" type="submit">Comprobar</button></form><div id="checkresult" class="checkresult"></div></div></section>
+<section class="panel"><h2>Interpretación gráfica</h2><p class="small muted">Las soluciones son las abscisas donde el lado izquierdo y el lado derecho toman el mismo valor.</p><div class="graph-actions"><button class="graph-btn" id="graphZoomIn" type="button" title="Acercar">＋ Acercar</button><button class="graph-btn" id="graphZoomOut" type="button" title="Alejar">－ Alejar</button><button class="graph-btn" id="graphReset" type="button" title="Volver a la vista inicial">↺ Restablecer vista</button></div><div class="graph-viewport"><canvas id="plot" class="plot" width="680" height="430" aria-label="Gráfica interactiva de los dos lados de la ecuación; arrastra para desplazarte, utiliza la rueda o pellizca para ampliar"></canvas><div class="graph-expressions" aria-label="Leyenda de las curvas"><div class="graph-identity"><span class="graph-color left"></span><span id="graphLeft"></span></div><div class="graph-identity"><span class="graph-color right"></span><span id="graphRight"></span></div></div></div><p class="graph-help">Arrastra para desplazarte · Rueda del mouse o pellizco con dos dedos para acercar y alejar. Los puntos amarillos representan las soluciones reales visibles.</p></section>
+</div>
+<section class="panel procedure-panel"><h2>Cuaderno de procedimiento</h2><p class="procedure-intro">El procedimiento prioriza métodos elementales y explica cada transformación.</p><ol id="steps" class="steps"></ol></section>
+</div>
+<div class="lab-footer-navigation"><a class="return-index" href="index.html">← Regresar al índice de la Unidad 2</a></div><div class="footer"><span>Matemática · Unidad 2 · Ecuaciones</span><span>Desarrollado por: Ing. Carlos R. Guffantte S., Mgs.</span></div>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), EPS=1e-10;
+const fmt=n=>{if(!Number.isFinite(n))return "—";if(Math.abs(n)<0.00005)n=0;const r=Math.round(n);return Math.abs(n-r)<1e-9?String(r):Number(n).toFixed(4)};
+const neat=fmt;
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function trim(p){p=p.slice();while(p.length>1&&Math.abs(p[p.length-1])<EPS)p.pop();return p}
+function degree(p){return trim(p).length-1}
+function add(a,b){const n=Math.max(a.length,b.length),r=Array(n).fill(0);for(let i=0;i<n;i++)r[i]=(a[i]||0)+(b[i]||0);return trim(r)}
+function scale(a,k){return trim(a.map(v=>v*k))}
+function sub(a,b){return add(a,scale(b,-1))}
+function mul(a,b){const r=Array(a.length+b.length-1).fill(0);for(let i=0;i<a.length;i++)for(let j=0;j<b.length;j++)r[i+j]+=a[i]*b[j];if(degree(r)>6)throw Error('El desarrollador admite polinomios de grado máximo 6.');return trim(r)}
+function divConst(a,b){b=trim(b);if(degree(b)!==0)throw Error('En esta versión, el denominador debe ser una constante.');if(Math.abs(b[0])<EPS)throw Error('No se puede dividir entre cero.');return scale(a,1/b[0])}
+function pow(a,n){if(!Number.isInteger(n)||n<0||n>6)throw Error('Se admiten exponentes enteros entre 0 y 6.');let r=[1];for(let i=0;i<n;i++)r=mul(r,a);return r}
+function tokens(src){src=src.replace(/[−–—]/g,'-').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/²/g,'^2').replace(/,/g,'.').replace(/\s+/g,'');if(!src)throw Error('Escribe una ecuación.');const raw=[];let i=0;while(i<src.length){const c=src[i];if(/[0-9.]/.test(c)){let j=i+1;while(j<src.length&&/[0-9.]/.test(src[j]))j++;const s=src.slice(i,j);if((s.match(/\./g)||[]).length>1||s==='.')throw Error('Número decimal no válido.');raw.push({t:'n',v:Number(s)});i=j}else if(c==='x'||c==='X'){raw.push({t:'x'});i++}else if('+-*/^()'.includes(c)){raw.push({t:c});i++}else throw Error('Símbolo no admitido: '+c)}const out=[];const leftEnd=t=>t&&(t.t==='n'||t.t==='x'||t.t===')'),rightStart=t=>t&&(t.t==='n'||t.t==='x'||t.t==='(');for(let k=0;k<raw.length;k++){if(k&&leftEnd(raw[k-1])&&rightStart(raw[k]))out.push({t:'*'});out.push(raw[k])}return out}
+function parseSide(src){const ts=tokens(src);let pos=0;function peek(t){return ts[pos]&&ts[pos].t===t}function primary(){if(peek('n'))return [ts[pos++].v];if(peek('x')){pos++;return [0,1]}if(peek('(')){pos++;const r=expr();if(!peek(')'))throw Error('Falta cerrar un paréntesis.');pos++;return r}throw Error('Expresión incompleta o símbolo fuera de lugar.')}function unary(){if(peek('+')){pos++;return unary()}if(peek('-')){pos++;return scale(unary(),-1)}return power()}function power(){let a=primary();if(peek('^')){pos++;if(!peek('n'))throw Error('El exponente debe ser numérico.');const n=ts[pos++].v;a=pow(a,n)}return a}function term(){let a=unary();while(peek('*')||peek('/')){const op=ts[pos++].t,b=unary();a=op==='*'?mul(a,b):divConst(a,b)}return a}function expr(){let a=term();while(peek('+')||peek('-')){const op=ts[pos++].t,b=term();a=op==='+'?add(a,b):sub(a,b)}return a}const r=expr();if(degree(r)>6)throw Error('El desarrollador admite polinomios de grado máximo 6.');if(pos!==ts.length)throw Error('No se pudo interpretar toda la expresión.');return trim(r)}
+function readEquation(src){const parts=src.replace(/[−–—]/g,'-').split('=');if(parts.length!==2)throw Error('La entrada debe contener exactamente un signo igual (=).');if(!parts[0].trim()||!parts[1].trim())throw Error('Debe existir una expresión a cada lado del signo igual.');const l=parseSide(parts[0]),r=parseSide(parts[1]),p=sub(l,r);return{source:src,l,r,p}}
+function readInputMath(source){
+ // La composición visual no modifica el árbol algebraico ni el orden de entrada.
+ // Los grupos parentéticos y las fracciones se representan directamente.
+ const halves=source.split('=');
+ function renderSide(src){
+   const ts=[];const re=/\s+|(?:\d+(?:[.,]\d*)?|[.,]\d+)|[xX]|[+−–—*/×·÷^()]|./gy;
+   let m;while((m=re.exec(src))!==null){if(/^\s+$/.test(m[0]))continue;ts.push(m[0])}
+   let i=0;
+   const isNum=t=>/^(?:\d|[.,]\d)/.test(t||'');
+   const isAtom=t=>isNum(t)||t==='x'||t==='X'||t==='(';
+   const op=t=>'<span class="read-op"> '+esc(t==='*'?'×':t)+' </span>';
+   const atom=()=>{
+     const t=ts[i];if(t===undefined)throw Error('Expresión incompleta.');
+     if(t==='('){i++;const inner=sum();if(ts[i]!==')')throw Error('Paréntesis sin cerrar.');i++;return {html:'<span class="read-group">('+inner.html+')</span>',unwrapped:inner.html}}
+     if(isNum(t)||t==='x'||t==='X'){i++;return {html:esc(t)}}
+     throw Error('Expresión no válida.');
+   };
+   const power=()=>{let a=atom();while(ts[i]==='^'){
+      i++;if(!isNum(ts[i]))throw Error('Potencia sin exponente.');a={html:a.html+'<sup>'+esc(ts[i++])+'</sup>'};
+   }return a};
+   const unary=()=>{if(['+','-','−','–','—'].includes(ts[i])){const sign=ts[i++];const a=unary();return {html:esc(sign)+a.html}}return power()};
+   const product=()=>{let a=unary();while(i<ts.length){
+     const t=ts[i];if(t==='/'||t==='÷'){
+       i++;const b=unary();a={html:'<span class="read-frac"><span class="read-frac-num">'+(a.unwrapped||a.html)+'</span><span class="read-frac-den">'+(b.unwrapped||b.html)+'</span></span>'};
+     }else if(t==='*'||t==='×'||t==='·'){
+       i++;const b=unary();a={html:a.html+op(t)+b.html};
+     }else if(isAtom(t)){
+       // 2x, 3(x+1), (x+1)(x-1): multiplicación implícita sin símbolo extra.
+       const b=unary();a={html:a.html+b.html};
+     }else break;
+   }return a};
+   const sum=()=>{let a=product();while(['+','-','−','–','—'].includes(ts[i])){
+      const t=ts[i++],b=product();a={html:a.html+op(t)+b.html};
+   }return a};
+   try{const out=sum();if(i!==ts.length)throw Error('');return '<span class="read-side">'+out.html+'</span>'}
+   catch(_e){return '<span class="read-side">'+esc(src).replace(/\^(\d+)/g,(_m,n)=>'<sup>'+n+'</sup>')+'</span>'}
+ }
+ return halves.length===1?renderSide(halves[0]):renderSide(halves[0])+'<span class="read-equals">=</span>'+renderSide(halves[1]);
+}
+function polyText(p){p=trim(p);if(p.every(v=>Math.abs(v)<EPS))return '0';let s='';for(let k=p.length-1;k>=0;k--){let a=p[k];if(Math.abs(a)<EPS)continue;const sign=a<0?'-':'+';const ab=Math.abs(a);let term='';if(k===0)term=fmt(ab);else{if(Math.abs(ab-1)>EPS)term=fmt(ab);term+='x';if(k===2)term+='²';else if(k===3)term+='³';else if(k>3)term+='^'+k}if(!s)s=(sign==='-'?'− ':'')+term;else s+=' '+(sign==='-'?'−':'+')+' '+term}return s}
+function linFactor(r){if(Math.abs(r)<EPS)return '(x)';return r<0?`(x + ${fmt(-r)})`:`(x − ${fmt(r)})`}
+function formatSolution(roots,kind,approx=[]){if(kind==='identity')return 'S = ℝ';if(kind==='none'||!roots.length)return 'S = ∅';return 'S = { '+uniqueFactorOrder(roots).sort((a,b)=>a-b).map(x=>(approx.some(v=>Math.abs(v-x)<1e-6)?'≈ ':'')+fmt(x)).join(' ; ')+' }'}
+const isZero=n=>Math.abs(n)<1e-8;
+function divideLinear(p,r){const n=degree(p),q=Array(n).fill(0);q[n-1]=p[n];for(let k=n-2;k>=0;k--)q[k]=p[k+1]+r*q[k+1];return{q:trim(q),rest:p[0]+r*q[0],row:[...q].reverse()}}
+function gcdInt(a,b){a=Math.abs(Math.round(a));b=Math.abs(Math.round(b));while(b){const t=a%b;a=b;b=t}return a||1}
+function intsOfPoly(p){for(let digits=0;digits<=6;digits++){const m=10**digits,ints=p.map(v=>Math.round(v*m));if(ints.every((v,i)=>Math.abs(v/m-p[i])<1e-8&&Math.abs(v)<1e7)){const g=ints.reduce((a,b)=>gcdInt(a,b),0);return ints.map(v=>v/g)}}return null}
+function divisors(n){n=Math.abs(Math.round(n));if(!n||n>1e7)return[];const r=[];for(let i=1;i*i<=n;i++)if(n%i===0){r.push(i);if(i*i!==n)r.push(n/i)}return r}
+function rationalCandidate(p){const a=intsOfPoly(p);if(!a||Math.abs(a[0])<1e-8)return null;const ns=divisors(a[0]),ds=divisors(a.at(-1));if(!ns.length||!ds.length)return null;const seen=new Set(),candidates=[];for(const n of ns)for(const d of ds){for(const sign of [-1,1]){const x=sign*n/d,key=x.toPrecision(12);if(!seen.has(key)){seen.add(key);candidates.push(x)}}}candidates.sort((a,b)=>Math.abs(a)-Math.abs(b)||a-b);for(const x of candidates){const v=pv(p,x),bound=p.reduce((a,b)=>a+Math.abs(b)*Math.max(1,Math.abs(x))**degree(p),0);if(Math.abs(v)<1e-8*Math.max(1,bound))return{root:x,coeff:a,candidates,constantDivisors:ns,leadingDivisors:ds}}return null}
+function solveQuadratic(p){const [c,b,a]=[p[0]||0,p[1]||0,p[2]],D=b*b-4*a*c,threshold=1e-10*Math.max(1,Math.abs(b*b),Math.abs(4*a*c));if(D< -threshold)return{roots:[],D};if(Math.abs(D)<=threshold)return{roots:[-b/(2*a)],D:0};return{roots:[(-b-Math.sqrt(D))/(2*a),(-b+Math.sqrt(D))/(2*a)],D}}
+// Distintas operaciones requieren distintos órdenes: los puntos críticos se ordenan, las soluciones siguen los factores.
+function unique(xs){return xs.filter(Number.isFinite).sort((a,b)=>a-b).filter((x,i,arr)=>i===0||Math.abs(x-arr[i-1])>1e-6*Math.max(1,Math.abs(x)))}
+function uniqueFactorOrder(xs){const out=[];for(const x of xs){if(!Number.isFinite(x))continue;if(!out.some(v=>Math.abs(x-v)<=1e-6*Math.max(1,Math.abs(x),Math.abs(v))))out.push(x)}return out}
+function numericalRoots(p){const n=degree(p);if(n===0)return[];if(n===1)return[-p[0]/p[1]];if(n===2)return solveQuadratic(p).roots;const dp=p.slice(1).map((v,i)=>v*(i+1)),critical=unique(numericalRoots(dp));const bound=Math.min(1e6,1+Math.max(...p.slice(0,-1).map(v=>Math.abs(v/p[n]))));const pts=[-bound,...critical.filter(v=>v>-bound&&v<bound),bound];let ans=critical.filter(x=>Math.abs(pv(p,x))<1e-6*Math.max(1,...p.map(Math.abs)));for(let i=0;i<pts.length-1;i++){let lo=pts[i],hi=pts[i+1],fl=pv(p,lo),fh=pv(p,hi);if(fl*fh>=0)continue;for(let k=0;k<110;k++){const mid=(lo+hi)/2,fm=pv(p,mid);if(fm===0){lo=hi=mid;break}if(fl*fm>0){lo=mid;fl=fm}else{hi=mid;fh=fm}}ans.push((lo+hi)/2)}return unique(ans)}
+function groupedCubic(p){
+ if(degree(p)!==3||p.some(v=>Math.abs(v)<1e-9))return null;
+ const [d,c,b,a]=p;
+ if(Math.abs(a*d-b*c)>1e-8*Math.max(1,Math.abs(a*d),Math.abs(b*c)))return null;
+ // x²(ax+b) + (c/a)(ax+b) = (ax+b)(x²+c/a)
+ const k=c/a;
+ return Number.isFinite(k)?{factor:[b,a],other:[k,0,1],k}:null;
+}
+function groupFullFactors(p,k){
+ const a=p[3],b=p[2],root2=Math.sqrt(-k);
+ let coefficient='',linear=polyText([b,a]);
+ if(Number.isInteger(a)&&Number.isInteger(b)){
+   const g=gcdInt(a,b),sign=a<0?-1:1,common=g*sign;
+   if(Math.abs(common)>1){coefficient=fmt(common);linear=polyText([b/common,a/common])}
+ }
+ const head=coefficient+'('+linear+')';
+ if(k>0)return head+'('+polyText([k,0,1])+')';
+ // Para raíces no racionales se conserva el radical exacto, sin redondearlo dentro del factor.
+ let term;
+ if(Math.abs(root2-Math.round(root2))<1e-10)term=fmt(root2);
+ else if(Math.abs(root2*2-Math.round(root2*2))<1e-10||Math.abs(root2*4-Math.round(root2*4))<1e-10)term=fmt(root2);
+ else term='√('+fmt(-k)+')';
+ return head+'(x − '+term+')(x + '+term+')';
+}
+// Priorizar factores lineales racionales exactos antes de recurrir a la fórmula general.
+function rationalQuadraticFactor(p,variable='x'){
+ if(degree(p)!==2)return null;
+ const a=p[2],b=p[1]||0,c=p[0]||0;
+ if(Math.abs(c)<EPS)return null; // El factor común se resuelve en su rama específica.
+ const hit=rationalCandidate(p);if(!hit)return null;
+ const first=hit.root,second=-b/a-first;
+ if(Math.abs(pv(p,first))>1e-7||Math.abs(pv(p,second))>1e-7)return null;
+ const ints=intsOfPoly(p);
+ const rationalParts=x=>{
+   if(!ints)return null;
+   const top=divisors(ints[0]),bot=divisors(ints[2]);
+   for(const den of bot)for(const num of top)for(const sign of [-1,1]){
+     const n=sign*num,g=gcdInt(n,den);
+     if(Math.abs(n/den-x)<1e-9)return{n:n/g,d:den/g};
+   }
+   return null;
+ };
+ const r1=rationalParts(first),r2=rationalParts(second);
+ if(!r1||!r2)return null;
+ const factor=r=>{
+   const xpart=(r.d===1?'':fmt(r.d))+variable;
+   return '('+xpart+(r.n<0?' + ':' − ')+fmt(Math.abs(r.n))+')';
+ };
+ const coefficient=a/(r1.d*r2.d);
+ const factorized=(Math.abs(coefficient-1)<1e-8?'':fmt(coefficient)) + factor(r1)+factor(r2);
+ return{roots:uniqueFactorOrder([first,second]),factorized};
+}
+// Las fórmulas con ± se representan mediante fracciones verticales en el cuaderno.
+function displayFraction(numerator,denominator){return '\\frac{'+numerator+'}{'+denominator+'}'}
+function squareRational(n){
+ if(n<0)return null;
+ const r=Math.sqrt(n);
+ if(Math.abs(r-Math.round(r))<1e-9)return Math.round(r);
+ // Identifica cuadrados racionales sencillos sin confundir una aproximación con un valor exacto.
+ for(let den=2;den<=100;den++){
+   const num=Math.round(r*den);
+   if(Math.abs(r-num/den)<1e-10&&Math.abs(n-(num/den)**2)<1e-9)return num/den;
+ }
+ return null;
+}
+function differenceOfSquares(p){
+ const a=p[2],c=p[0]||0;
+ if(!(a*c<0))return null;
+ // Extracción de factor constante común, si los coeficientes son enteros.
+ let common=1;
+ if(Number.isSafeInteger(a)&&Number.isSafeInteger(c))common=gcdInt(a,c);
+ // Se normaliza el signo para que la diferencia comience por un cuadrado positivo.
+ if(a<0)common=-common;
+ const A=a/common,C=c/common;
+ const u=squareRational(A),v=squareRational(-C);
+ if(u===null||v===null)return null;
+ const left=(Math.abs(u-1)<EPS?'':fmt(u))+'x',right=fmt(v);
+ const fac='('+left+' − '+right+')('+left+' + '+right+')';
+ const scaled=Math.abs(common-1)<EPS?fac:fmt(common)+fac;
+ return{common,A,C,u,v,fac,scaled};
+}
+// Suma y diferencia de cubos perfectos: A³ ± B³.
+// Admite A = ux y A = ux² (polinomios puros de grado 3 o 6),
+// y coeficientes racionales que sean cubos exactos tras extraer factor común.
+function cubeRational(n){
+ if(n<0)return null;
+ const v=Math.cbrt(n);
+ for(let d=1;d<=100;d++){
+   const numerator=Math.round(v*d),t=numerator/d;
+   if(Math.abs(t*t*t-n)<1e-9*Math.max(1,Math.abs(n)) && Math.abs(t-v)<1e-9*Math.max(1,v))return t;
+ }
+ return null;
+}
+function sumDifferenceCubes(p){
+ const d=degree(p);
+ if(d!==3&&d!==6)return null;
+ if(p.slice(1,d).some(v=>Math.abs(v)>EPS))return null;
+ const a=p[d],c=p[0];
+ if(Math.abs(a)<EPS||Math.abs(c)<EPS)return null;
+ let common=1;
+ if(Number.isSafeInteger(a)&&Number.isSafeInteger(c))common=gcdInt(a,c);
+ if(a<0)common=-common;
+ const A=a/common,C=c/common;
+ if(A<=0)return null;
+ const u=cubeRational(A),v=cubeRational(Math.abs(C));
+ if(u===null||v===null||u<EPS||v<EPS)return null;
+ const sign=C>0?1:-1,m=d/3;
+ const first=Array(m+1).fill(0);first[0]=sign*v;first[m]=u;
+ const second=Array(2*m+1).fill(0);second[0]=v*v;second[m]=-sign*u*v;second[2*m]=u*u;
+ const base=(Math.abs(u-1)<EPS?'':fmt(u))+'x'+(m===2?'²':'');
+ const firstText='('+polyText(first)+')',secondText='('+polyText(second)+')';
+ const pref=Math.abs(common-1)<EPS?'':fmt(common);
+ return {degree:d,m,common,u,v,sign,first,second,base,firstText,secondText,
+  factorized:pref+firstText+secondText,kind:sign>0?'Suma de cubos':'Diferencia de cubos'};
+}
+function stepCubes(p,trace){
+ const cub=sumDifferenceCubes(p);if(!cub)return null;
+ const {m,common,u,v,sign,first,second,base,firstText,secondText,factorized}=cub;
+ const varName=m===1?'x':'x²',signWord=sign>0?'+':'−';
+ if(Math.abs(common-1)>EPS){
+   trace.push({title:'Extraer el factor numérico común',math:`${polyText(p)} = ${fmt(common)}(${polyText(scale(p,1/common))}) = 0`,note:'Se saca el factor numérico común para identificar cubos perfectos.'});
+ }
+ trace.push({title:'Reconocer '+cub.kind.toLowerCase(),
+   math:`${polyText(scale(p,1/common))} = (${base})³ ${signWord} (${fmt(v)})³`,
+   note:'Se reconoce A³ '+signWord+' B³, con A = '+base+' y B = '+fmt(v)+'.'});
+ trace.push({title:'Aplicar la identidad notable',
+   math:`A³ ${signWord} B³ = (A ${signWord} B)(A² ${sign>0?'−':'+'} AB + B²)`,
+   note:sign>0?'La suma de cubos se factoriza en (A + B)(A² − AB + B²).':'La diferencia de cubos se factoriza en (A − B)(A² + AB + B²).'});
+ trace.push({title:'Escribir la factorización del polinomio',math:`${factorized} = 0`,
+   note:'Se sustituyen A y B por sus expresiones originales, conservando los dos factores.'});
+ trace.push({title:'Aplicar la propiedad del producto nulo',math:`${firstText} = 0   o   ${secondText} = 0`,
+   note:'El factor constante distinto de cero no modifica las soluciones.'});
+ let roots=[];
+ if(m===1){
+   const r=-sign*v/u;
+   const equation=`${Math.abs(u-1)<EPS?'x':fmt(u)+'x'} = ${fmt(-sign*v)}`;
+   trace.push({title:'Resolver el factor lineal',math:`${polyText(first)} = 0\n${equation}\nx = ${displayFraction(fmt(-sign*v),fmt(u))} = ${fmt(r)}`,
+     note:'Se despeja x en el primer factor.'});
+   roots=[r];
+ }else{
+   const y=-sign*v/u;
+   trace.push({title:'Resolver el primer factor',math:`${polyText(first)} = 0\n${Math.abs(u-1)<EPS?'x²':fmt(u)+'x²'} = ${fmt(-sign*v)}\nx² = ${fmt(y)}`,
+     note:'Se aísla x² antes de calcular las raíces reales.'});
+   if(y>0){
+     const quadraticDiff=differenceOfSquares(first);
+     if(quadraticDiff){
+       trace.push({title:'Factorizar la diferencia de cuadrados',math:`${quadraticDiff.scaled} = 0`,note:'El factor cuadrático también admite una factorización notable.'});
+       trace.push({title:'Igualar los factores lineales a cero',math:`${quadraticDiff.fac.split(')(').map((f,i)=>i===0?f+') = 0':'('+f+' = 0').join('   o   ')}`,note:'Se aplica la propiedad del producto nulo.'});
+     }
+     const t=Math.sqrt(y);roots=[t,-t];
+     trace.push({title:'Obtener las raíces del primer factor',math:`x₁ = ${fmt(t)}   ;   x₂ = ${fmt(-t)}`,
+       note:'Se consideran los signos positivo y negativo de la raíz cuadrada.'});
+   }else trace.push({title:'Analizar el primer factor',math:`x² = ${fmt(y)}`,note:'Un cuadrado real no puede ser negativo.'});
+ }
+ // El segundo factor es siempre positivo en R: D = -3u²v² al tomar t=x^m.
+ const disc=-3*u*u*v*v;
+ trace.push({title:'Analizar el segundo factor',
+   math:`${polyText(second)} = 0\nΔ = ${fmt(disc)} < 0`,
+   note:`Al considerar t = ${varName}, el factor es cuadrático en t y su discriminante es negativo; no aporta raíces reales.`});
+ return {cub,roots};
+}
+function stepQuadratic(p, trace, prefix='', deferRootList=false){
+ const a=p[2],b=p[1]||0,c=p[0]||0,sol=solveQuadratic(p),rr=sol.roots,D=sol.D;
+ const head=prefix?prefix+' · ':'';
+ if(Math.abs(c)<EPS){
+   trace.push({title:head+'Extraer factor común',math:`x(${polyText([b,a])}) = 0`,note:'Ambos términos tienen x como factor común.'});
+   trace.push({title:head+'Aplicar la propiedad del producto nulo',math:Math.abs(b)<EPS?'x = 0':`x = 0   o   ${polyText([b,a])} = 0`,note:Math.abs(b)<EPS?'Los dos factores contienen x; la única raíz es 0.':'Si un producto es cero, al menos uno de sus factores debe valer cero.'});
+   if(Math.abs(b)>EPS)trace.push({title:head+'Resolver el factor lineal',math:`${polyText([b,a])} = 0  →  ${fmt(a)}x = ${fmt(-b)}\nx = ${fmt(-b)}/${fmt(a)} = ${fmt(-b/a)}`,note:'Se pasa el término independiente al otro lado y se divide entre el coeficiente de x.'});
+   return {...sol,roots:uniqueFactorOrder([0,-b/a])};
+ }
+ if(Math.abs(b)<EPS){
+   const diff=differenceOfSquares(p);
+   if(diff){
+     if(Math.abs(diff.common-1)>EPS){
+       trace.push({title:head+'Extraer el factor numérico común',math:`${polyText(p)} = ${fmt(diff.common)}(${polyText([diff.C,0,diff.A])}) = 0`,note:'Se extrae el factor constante para reconocer la diferencia entre dos cuadrados.'});
+     }
+     trace.push({title:head+'Reconocer la diferencia de cuadrados',math:`${polyText([diff.C,0,diff.A])} = (${Math.abs(diff.u-1)<EPS?'x':fmt(diff.u)+'x'})² − (${fmt(diff.v)})²`,note:'Se identifica la identidad A² − B² = (A − B)(A + B).'});
+     trace.push({title:head+'Factorizar la diferencia de cuadrados',math:`${diff.scaled} = 0`,note:'Se aplica A² − B² = (A − B)(A + B).'});
+     trace.push({title:head+'Aplicar la propiedad del producto nulo',math:`${diff.u===1?'x':fmt(diff.u)+'x'} − ${fmt(diff.v)} = 0   o   ${diff.u===1?'x':fmt(diff.u)+'x'} + ${fmt(diff.v)} = 0`,note:'Cada factor lineal se iguala a cero por separado.'});
+     trace.push({title:head+'Despejar las dos soluciones',math:`x₁ = ${displayFraction(fmt(diff.v),fmt(diff.u))} = ${fmt(diff.v/diff.u)}\nx₂ = ${displayFraction('−'+fmt(diff.v),fmt(diff.u))} = ${fmt(-diff.v/diff.u)}`,note:'Se despeja x en cada una de las dos ecuaciones lineales.'});
+     return {...sol,roots:uniqueFactorOrder([diff.v/diff.u,-diff.v/diff.u])};
+   }
+   const y=-c/a;
+   trace.push({title:head+'Despejar el término cuadrático',math:`${Math.abs(a-1)<EPS?'':fmt(a)}x² = ${fmt(-c)}`,note:'Se traslada el término independiente.'});
+   if(Math.abs(a-1)>EPS)trace.push({title:head+'Dividir entre el coeficiente cuadrático',math:`x² = ${fmt(y)}`,note:'Se divide entre el coeficiente de x² para aislar el cuadrado de la incógnita.'});
+   if(y>=0)trace.push({title:head+'Extraer las raíces cuadradas',math:`x = ± √(${fmt(y)}) = ± ${fmt(Math.sqrt(y))}`,note:'Se consideran los dos signos de la raíz cuadrada; si y es cero solo hay una raíz.'});
+   else trace.push({title:head+'Analizar las soluciones reales',math:'No existen soluciones reales',note:'Un cuadrado no puede ser negativo en los números reales.'});
+   return {...sol,roots:y>=0?uniqueFactorOrder([Math.sqrt(y),-Math.sqrt(y)]):[]};
+ }
+ const exact=rationalQuadraticFactor(p);
+ if(exact){
+   const factor=exact.factorized;
+   trace.push({title:head+'Factorizar el trinomio',math:`${polyText(p)} = ${factor}`,note:'Se buscan dos factores lineales cuyo producto reproduzca los coeficientes del trinomio. Si existe un coeficiente principal distinto de 1, se conserva como factor.'});
+   // Cada paso realiza una transformación distinta: factores = 0, después despeje de las raíces.
+   // En Ruffini, la numeración definitiva se reserva para el paso que reúne todos los factores.
+   const factorEquations=[...new Set((factor.match(/\([^()]*\)/g)||[]).map(f=>f+' = 0'))];
+   trace.push({title:head+'Aplicar la propiedad del producto nulo',math:factorEquations.join('   o   '),note:'Cada factor lineal se iguala a cero; un coeficiente constante no nulo no altera las raíces.'});
+   if(!deferRootList)trace.push({title:head+'Despejar las raíces',math:exact.roots.map((x,i)=>`x${i+1} = ${fmt(x)}`).join('   ;   '),note:exact.roots.length===1?'Los dos factores iguales producen una raíz real doble.':'Se resuelve cada ecuación lineal en el orden de los factores.'});
+ }else{
+   trace.push({title:head+'Identificar los coeficientes',math:`a = ${fmt(a)}   ;   b = ${fmt(b)}   ;   c = ${fmt(c)}`,note:'Se identifican los coeficientes de ax² + bx + c = 0.'});
+   trace.push({title:head+'Calcular el discriminante',math:`Δ = b² − 4ac\nΔ = (${fmt(b)})² − 4(${fmt(a)})(${fmt(c)}) = ${fmt(D)}`,note:D<0?'Como Δ es negativo, no hay raíces reales.':D===0?'Como Δ es cero, existe una raíz real doble.':'Como Δ es positivo, existen dos raíces reales distintas.'});
+   if(D>=0){
+     trace.push({title:head+'Sustituir en la fórmula general',math:`x = ${displayFraction('−b ± √Δ','2a')}\nx = ${displayFraction(fmt(-b)+' ± √('+fmt(D)+')','2('+fmt(a)+')')}`,note:'Se reemplazan a, b y Δ por sus valores conservando numerador y denominador.'});
+     if(D>0)trace.push({title:head+'Resolver ambos signos',math:`x₁ = ${displayFraction(fmt(-b)+' + √('+fmt(D)+')',fmt(2*a))} = ${fmt((-b+Math.sqrt(D))/(2*a))}\nx₂ = ${displayFraction(fmt(-b)+' − √('+fmt(D)+')',fmt(2*a))} = ${fmt((-b-Math.sqrt(D))/(2*a))}`,note:'Se evalúan por separado el signo positivo y el negativo.'});
+     else trace.push({title:head+'Simplificar el resultado',math:`x = ${displayFraction(fmt(-b),fmt(2*a))} = ${fmt(rr[0])}`,note:'La raíz cuadrada del discriminante es cero.'});
+   }
+ }
+ return {...sol,roots:exact?exact.roots:(D>0?uniqueFactorOrder([(-b+Math.sqrt(D))/(2*a),(-b-Math.sqrt(D))/(2*a)]):rr)};
+}
+function solveData(eq){
+ const p=trim(eq.p),d=degree(p),trace=[],roots=[],approxRoots=[];
+ if(d===0)return{kind:isZero(p[0])?'identity':'none',type:isZero(p[0])?'Identidad':'Ecuación incompatible',roots:[],degree:0,disc:null,trace};
+ if(d===1){
+   const a=p[1],b=p[0],value=-b/a;
+   // La transformación completa del despeje se elabora con ambos lados en renderSteps.
+   return{kind:'poly',type:'Ecuación lineal',roots:[value],degree:1,disc:null,trace,usedNumerical:false,approxRoots:[]};
+ }
+ if(d===2){const q=stepQuadratic(p,trace);return{kind:'poly',type:'Ecuación cuadrática',roots:uniqueFactorOrder(q.roots),degree:2,disc:q.D,trace,usedNumerical:false,approxRoots:q.roots.filter(r=>Math.abs(r-Number(fmt(r)))>1e-9)}};
+ // Priorizar identidades de cubos perfectos frente a Ruffini o la aproximación numérica.
+ const directCubes=stepCubes(p,trace);
+ if(directCubes){
+   const rr=uniqueFactorOrder(directCubes.roots);
+   return{kind:'poly',type:`Ecuación polinómica de grado ${d} · ${directCubes.cub.kind.toLowerCase()}`,degree:d,roots:rr,disc:null,trace,usedNumerical:false,approxRoots:rr.filter(x=>Math.abs(x-Number(fmt(x)))>1e-9)};
+ }
+ if(d===4&&isZero(p[1])&&isZero(p[3])){
+   const q=[p[0],p[2],p[4]];
+   trace.push({title:'Sustituir la variable',math:`y = x²\n${polyText(q).replaceAll('x','y')} = 0`,note:'Al aparecer solo potencias pares, x⁴ se convierte en y² y x² se convierte en y.'});
+   const aux=solveQuadratic(q),auxFact=rationalQuadraticFactor(q,'y'),qr=auxFact?auxFact.roots:aux.roots;
+   const rr=[];
+   if(auxFact){
+     trace.push({title:'Factorizar la ecuación auxiliar',math:`${polyText(q).replaceAll('x','y')} = ${auxFact.factorized} = 0`,note:'Se factoriza directamente la ecuación auxiliar, conservando la expresión como producto.'});
+     const factoredX=auxFact.factorized.replaceAll('y','x²');
+     trace.push({title:'Regresar del cambio de variable',math:`${factoredX} = 0`,note:'Se reemplaza y por x² en cada factor, sin despejar previamente los valores de y.'});
+     const perfect=qr.length>0&&qr.every(y=>y>=-EPS&&Math.abs(Math.sqrt(Math.max(0,y))-Math.round(Math.sqrt(Math.max(0,y))))<1e-8);
+     if(perfect){
+       const factors=qr.flatMap(y=>{
+         const t=Math.sqrt(Math.max(0,y));
+         const pair=t<EPS?['(x)','(x)']:[linFactor(t),linFactor(-t)];
+         // Si la ecuación auxiliar tiene raíz doble, ambos factores en x² se repiten.
+         return aux.D===0?[...pair,...pair]:pair;
+       });
+       const final=(Math.abs(p[4]-1)<EPS?'':fmt(p[4]))+factors.join('');
+       trace.push({title:'Completar la factorización en x',math:`${final} = 0`,note:'Se aplica diferencia de cuadrados a los factores que corresponden; ahora el polinomio queda completamente factorizado.'});
+       trace.push({title:'Aplicar la propiedad del producto nulo',math:factors.map(f=>`${f} = 0`).join('   o   '),note:'Si el producto es cero, al menos uno de sus factores lineales debe ser cero.'});
+       trace.push({title:'Resolver las ecuaciones lineales',math:uniqueFactorOrder(qr.flatMap(y=>{const t=Math.sqrt(Math.max(0,y));return [t,-t]})).map((v,i)=>`x${i+1} = ${fmt(v)}`).join('   ;   '),note:'Se despeja x en el mismo orden en que aparecen los factores lineales.'});
+     }else{
+       trace.push({title:'Aplicar la propiedad del producto nulo',math:qr.map(y=>`x² = ${fmt(y)}`).join('   o   '),note:'Se igualan a cero los factores en x², sin volver a la variable auxiliar.'});
+     }
+     qr.forEach(y=>{
+       if(y>=-EPS){
+         const t=Math.sqrt(Math.max(y,0));rr.push(t,-t);
+         if(!perfect)trace.push({title:'Resolver el factor cuadrático',math:`x² = ${fmt(y)}\nx = ${t<EPS?'0':'± √('+fmt(y)+')'}${t<EPS?'':' = ± '+fmt(t)}`,note:'Se extraen las raíces cuadradas de cada igualdad; se consideran ambos signos.'});
+       }else trace.push({title:'Descartar el factor sin raíces reales',math:`x² = ${fmt(y)}`,note:'No existe x real cuyo cuadrado sea negativo.'});
+     });
+   }else{
+     if(qr.length){
+       const D=aux.D;
+       trace.push({title:'Calcular el discriminante auxiliar',math:`Δ = (${fmt(q[1])})² − 4(${fmt(q[2])})(${fmt(q[0])}) = ${fmt(D)}`,note:'No se encontró una factorización racional directa; se aplica la fórmula general.'});
+       trace.push({title:'Sustituir en la fórmula general',math:`y = ${displayFraction('−b ± √Δ','2a')}\ny = ${displayFraction('−('+fmt(q[1])+') ± √('+fmt(D)+')','2('+fmt(q[2])+')')}`,note:'Se sustituyen los coeficientes de la ecuación auxiliar.'});
+       if(D>0)trace.push({title:'Resolver los dos signos de la fórmula',math:`y₁ = ${displayFraction(fmt(-q[1])+' + √('+fmt(D)+')',fmt(2*q[2]))} = ${fmt((-q[1]+Math.sqrt(D))/(2*q[2]))}\ny₂ = ${displayFraction(fmt(-q[1])+' − √('+fmt(D)+')',fmt(2*q[2]))} = ${fmt((-q[1]-Math.sqrt(D))/(2*q[2]))}`,note:'Se calculan los dos valores auxiliares antes de volver a x.'});
+       else trace.push({title:'Simplificar la raíz auxiliar doble',math:`y = ${displayFraction(fmt(-q[1]),fmt(2*q[2]))} = ${fmt(-q[1]/(2*q[2]))}`,note:'El discriminante vale cero y produce un solo valor auxiliar.'});
+     }else trace.push({title:'Comprobar el discriminante auxiliar',math:`Δ = (${fmt(q[1])})² − 4(${fmt(q[2])})(${fmt(q[0])}) = ${fmt(aux.D)}`,note:'El discriminante es negativo, así que la ecuación en y no tiene raíces reales.'});
+     qr.forEach(y=>{
+       if(y>=-EPS){const t=Math.sqrt(Math.max(y,0));rr.push(t,-t);trace.push({title:'Deshacer la sustitución',math:`x² = ${fmt(y)}\nx = ${t<EPS?'0':'± √('+fmt(y)+')'}${t<EPS?'':' = ± '+fmt(t)}`,note:'Como y = x², se extraen las raíces cuadradas positivas y negativas.'})}
+       else trace.push({title:'Descartar un valor auxiliar negativo',math:`x² = ${fmt(y)}`,note:'Un cuadrado real no puede ser negativo.'});
+     });
+   }
+   return{kind:'poly',type:'Ecuación bicuadrática · grado 4',roots:uniqueFactorOrder(rr),degree:4,disc:null,trace,usedNumerical:false,approxRoots:rr.filter(x=>Math.abs(x-Number(fmt(x)))>1e-9)};
+ }
+ if(d===3){
+   const grouped=groupedCubic(p);
+   if(grouped){
+     const [dd,cc,bb,aa]=p,k=grouped.k,binom=polyText([bb,aa]),secondBlock=polyText([dd,cc]);
+     trace.push({title:'Agrupar los términos',math:`(${polyText([0,0,bb,aa])}) + (${secondBlock}) = 0`,note:'Se reúnen los términos cúbico y cuadrático, y después los lineal y constante.'});
+     trace.push({title:'Extraer factor común de cada grupo',math:`x²(${binom}) ${k<0?'−':'+'} ${fmt(Math.abs(k))}(${binom}) = 0`,note:'Del primer grupo se extrae x² y del segundo el coeficiente común indicado. En ambos aparece el mismo binomio.'});
+     trace.push({title:'Extraer el binomio común',math:`(${binom})(${polyText([k,0,1])}) = 0`,note:'Se usa la identidad AB + CB = (A + C)B.'});
+     if(k<0)trace.push({title:'Completar la factorización',math:groupFullFactors(p,k)+' = 0',note:'Se utiliza la diferencia de cuadrados para escribir todos los factores posibles.'});
+     trace.push({title:'Aplicar la propiedad del producto nulo',math:`${binom} = 0   o   ${polyText([k,0,1])} = 0`,note:'Cada factor no constante se iguala a cero por separado.'});
+     trace.push({title:'Despejar el factor lineal',math:`${fmt(aa)}x = ${fmt(-bb)}\nx = ${fmt(-bb)}/${fmt(aa)} = ${fmt(-bb/aa)}`,note:'Se traslada la constante y se divide por el coeficiente de x.'});
+     if(k<0)trace.push({title:'Resolver el factor cuadrático',math:`x² = ${fmt(-k)}\nx = ± √(${fmt(-k)}) = ± ${fmt(Math.sqrt(-k))}`,note:'Se despeja x² y se toman ambas raíces cuadradas.'});
+     else trace.push({title:'Analizar el factor cuadrático',math:`x² = ${fmt(-k)}`,note:'El lado derecho es negativo; no aporta raíces reales.'});
+     const rr=uniqueFactorOrder([-bb/aa,...(k<0?[Math.sqrt(-k),-Math.sqrt(-k)]:[])]);
+     return{kind:'poly',type:'Ecuación polinómica de grado 3',degree:3,roots:rr,disc:null,trace,usedNumerical:false,approxRoots:rr.filter(x=>Math.abs(x-Number(fmt(x)))>1e-9)};
+   }
+ }
+ let rest=p.slice(),disc=null,usedNumerical=false;
+ const factors=[];
+ while(degree(rest)>0&&Math.abs(rest[0])<1e-9){
+   const old=rest.slice();rest=trim(rest.slice(1));roots.push(0);factors.push('(x)');
+   trace.push({title:'Extraer el factor común x',math:`${polyText(old)} = x(${polyText(rest)})\nx(${polyText(rest)}) = 0`,note:'El término independiente es cero. Se extrae una x y queda un polinomio de un grado menor.'});
+   trace.push({title:'Identificar una raíz del producto',math:'x = 0',note:'Por la propiedad del producto nulo, el factor x produce la raíz 0; se continúa con el otro factor.'});
+ }
+ while(degree(rest)>2){
+   const nestedCube=sumDifferenceCubes(rest);
+   if(nestedCube){
+     const handled=stepCubes(rest,trace);
+     roots.push(...handled.roots);
+     if(factors.length){
+       const full=factors.join('')+nestedCube.factorized;
+       trace.push({title:'Reunir todos los factores de la ecuación original',
+         math:`${polyText(p)} = ${full}\n${full} = 0`,
+         note:'Se conserva el factor común o los factores obtenidos previamente y se incorpora la factorización por cubos.'});
+     }
+     // El segundo factor de la identidad de cubos no aporta raíces reales.
+     rest=[1];
+     break;
+   }
+   const found=rationalCandidate(rest);if(!found)break;
+   const old=rest.slice(),division=divideLinear(rest,found.root);if(Math.abs(division.rest)>1e-6)break;
+   roots.push(found.root);rest=division.q;
+   const factor=linFactor(found.root);factors.push(factor);
+   // Los candidatos se reconstruyen desde los coeficientes enteros primitivos
+   // del polinomio que corresponde a ESTA aplicación de Ruffini.
+   const positive=unique(found.candidates.filter(v=>v>0));
+   const candidateText=positive.map(v=>{
+     // Las fracciones se muestran de manera legible; los enteros no se rellenan con ceros.
+     const denom=found.leadingDivisors.find(d=>Math.abs(v*d-Math.round(v*d))<1e-9) || 1;
+     const numerator=Math.round(v*denom),g=gcdInt(numerator,denom);
+     return '±'+(denom/g===1?fmt(numerator/g):fmt(numerator/g)+'/'+fmt(denom/g));
+   }).join(' ; ');
+   const monic=Math.abs(found.coeff.at(-1))===1;
+   const root=fmt(found.root),evaluation=fmt(pv(old,found.root));
+   trace.push({title:'Determinar las posibles raíces racionales',
+     math:`Candidatos: ${candidateText}`,
+     note:monic
+       ?`Se consideran los divisores positivos y negativos del término independiente (${fmt(found.coeff[0])}). No todos tienen que ser raíces.`
+       :`Se aplica el teorema de la raíz racional: ±p/q, donde p divide al término independiente (${fmt(found.coeff[0])}) y q divide al coeficiente principal (${fmt(found.coeff.at(-1))}). Los candidatos se expresan sin repeticiones.`});
+   trace.push({title:'Comprobar una raíz racional',
+     math:`x = ${root}\nP(${root}) = ${evaluation}`,
+     note:`Al sustituir x = ${root}, el polinomio vale cero. Por tanto, x = ${root} es una raíz y ${factor} es un factor del polinomio.`});
+   // Cada Ruffini conserva la tabla operativa, pero la conclusión se muestra
+   // directamente como factorización progresiva del polinomio original.
+   // De esta forma no aparece otra etapa redundante de «división sintética».
+   const progressiveFactorization=`${polyText(p)} = ${factors.join('')}(${polyText(rest)})`;
+   trace.push({title:'Aplicar Ruffini y escribir la factorización',math:progressiveFactorization,note:'Se baja el primer coeficiente; después se multiplica por la raíz elegida y se suma al siguiente coeficiente. Como el residuo es cero, se incorpora el factor obtenido. Si el cociente admite otra raíz racional, el proceso continúa.',ruffini:{coefficients:[...old].reverse(),root:found.root}});
+ }
+ if(degree(rest)===2){
+   const q=stepQuadratic(rest,trace,factors.length?'Cociente':'',factors.length>0);disc=q.D;roots.push(...q.roots);
+   // Mostrar la forma factorizada del polinomio original, no solamente la del cociente.
+   if(factors.length&&q.roots.length&&q.roots.every(x=>Math.abs(x-Number(fmt(x)))<1e-9)){
+     const all=factors.concat(q.roots.length===1?[linFactor(q.roots[0]),linFactor(q.roots[0])]:q.roots.map(linFactor));
+     const factorized=(Math.abs(p[d]-1)<EPS?'':fmt(p[d]))+all.join('');
+     trace.push({title:'Escribir la factorización completa',math:`${polyText(p)} = ${factorized}\n${factorized} = 0`,note:'Se reúnen los factores obtenidos mediante factor común, Ruffini y la factorización del cociente.'});
+   }
+ }else if(degree(rest)===1){
+   const [b,a]=rest,root=-b/a;roots.push(root);
+   trace.push({title:'Despejar el factor lineal restante',math:`${polyText(rest)} = 0${Math.abs(b)>EPS?'\n'+fmt(a)+'x = '+fmt(-b):''}\nx = ${fmt(-b)}/${fmt(a)} = ${fmt(root)}`,note:'Se traslada la constante y se divide entre el coeficiente lineal.'});
+   if(factors.length) {
+     const all=factors.concat([linFactor(root)]),factorized=(Math.abs(p[d]-1)<EPS?'':fmt(p[d]))+all.join('');
+     trace.push({title:'Completar la factorización del polinomio',math:`${polyText(p)} = ${factorized}`,note:'Se reúnen todos los factores lineales obtenidos.'});
+   }
+ }else if(degree(rest)>2){
+   const rr=numericalRoots(rest);usedNumerical=true;roots.push(...rr);approxRoots.push(...rr);
+   if(factors.length)trace.push({title:'Conservar el factor residual',math:`${polyText(rest)} = 0`,note:'Se continúa con el factor que no pudo resolverse mediante raíces racionales.'});
+   trace.push({title:'Aproximar las raíces reales restantes',math:rr.length?rr.map((v,i)=>`x${i+1} ≈ ${fmt(v)}`).join('   ;   '):'No se encontraron raíces reales',note:'Se usa un método numérico avanzado que no se desarrolla en detalle en este nivel.'});
+ }
+ const clean=uniqueFactorOrder(roots);
+ if(trace.some(st=>st.ruffini)&&clean.length){
+   trace.push({title:'Obtener las soluciones de todos los factores',math:clean.map((v,i)=>`x${i+1} = ${fmt(v)}`).join('   ;   '),note:'Se iguala cada factor a cero y las raíces se escriben siguiendo el orden de los factores de la factorización.'});
+ }
+ return{kind:'poly',type:`Ecuación polinómica de grado ${d}`,degree:d,roots:clean,disc:null,trace,usedNumerical,approxRoots};
+}
+function makeRuffiniTable(data){
+ const a=data.coefficients,r=data.root;
+ const bottom=[a[0]],products=[null];
+ for(let j=1;j<a.length;j++){
+   const product=r*bottom[j-1];products.push(product);bottom.push(a[j]+product);
+ }
+ const wrap=document.createElement('div');wrap.className='ruffini-wrap';
+ const table=document.createElement('table');table.className='ruffini-table';
+ table.setAttribute('aria-label','División sintética de Ruffini: coeficientes, productos y sumas');
+ for(const [className,row] of [['r-coefs',a],['r-products',products],['r-bottom',bottom]]){
+   const tr=document.createElement('tr');tr.className=className;
+   const label=document.createElement('td');label.className='r-root';label.textContent=className==='r-coefs'?fmt(r):'';tr.append(label);
+   for(const v of row){const td=document.createElement('td');td.textContent=v===null?'':fmt(v);tr.append(td)}table.append(tr);
+ }
+ wrap.append(table);
+ const progress=document.createElement('div');progress.className='ruffini-process';
+ function action(title,math,note){const div=document.createElement('div');div.className='r-action';
+   const h=document.createElement('div');h.className='r-action-title';h.textContent=title;
+   const line=document.createElement('div');line.className='r-action-math';line.textContent=math;
+   const desc=document.createElement('div');desc.className='r-action-note';desc.textContent=note;
+   div.append(h,line,desc);progress.append(div);
+ }
+ action('1. Bajar el coeficiente principal',`${fmt(a[0])} ↓ ${fmt(bottom[0])}`,'El primer coeficiente pasa directamente a la fila inferior, sin modificarlo.');
+ for(let j=1;j<a.length;j++){
+   const last=j===a.length-1;
+   action(`${j+1}. Multiplicar y sumar`,
+      `${fmt(bottom[j-1])} × (${fmt(r)}) = ${fmt(products[j])}    →    ${fmt(a[j])} + (${fmt(products[j])}) = ${fmt(bottom[j])}`,
+      last?'Esta última suma corresponde al residuo.':'El resultado de la suma se escribe debajo de la columna y se usa en la multiplicación siguiente.');
+ }
+ const conclusion=document.createElement('div');conclusion.className='ruffini-meaning';
+ conclusion.textContent='Residuo = '+fmt(bottom.at(-1))+'. '+(Math.abs(bottom.at(-1))<1e-7?'La división es exacta: (x '+(r<0?'+ ':'− ')+fmt(Math.abs(r))+') es un factor. ':'')+'Los demás valores de la última fila forman los coeficientes del cociente.';
+ wrap.append(progress,conclusion);return wrap;
+}
+function expandExplicitFractions(raw){
+ // Parser seguro y limitado: no interpreta HTML ni evalúa expresiones.
+ const str=String(raw);
+ const readBraces=(start)=>{
+   if(str[start]!=='{')return null;
+   let depth=0;
+   for(let k=start;k<str.length;k++){
+     if(str[k]==='{')depth++;
+     else if(str[k]==='}'&&--depth===0)return {text:str.slice(start+1,k),end:k+1};
+   }
+   return null;
+ };
+ let out='',i=0;
+ while(i<str.length){
+   if(str.startsWith('\\frac{',i)){
+     const first=readBraces(i+5);
+     const second=first&&readBraces(first.end);
+     if(first&&second){
+       out+='<span class="math-frac"><span class="math-num">'+mathSup(esc(first.text))+'</span><span class="math-den">'+mathSup(esc(second.text))+'</span></span>';
+       i=second.end;continue;
+     }
+   }
+   // Procesar los demás caracteres más adelante con el renderizador tradicional.
+   out+=esc(str[i]);i++;
+ }
+ return out;
+}
+function renderProcedureMath(raw){
+ // Se procesan las barras de fracción sin reordenar los términos originales.
+ // Reconoce (numerador)/(denominador), (numerador)/n, x/n y n/n.
+ const input=String(raw);
+ // Las fracciones explícitas de la fórmula general pueden contener sumas,
+ // radicales y paréntesis: se procesan antes de las fracciones con barra /.
+ if(input.includes('\\frac{')){
+   return mathSup(expandExplicitFractions(input).replace(/\^([0-9]+)/g,(_m,n)=>'<sup>'+n+'</sup>'));
+ }
+ let pieces=[],last=0;
+ const re=/((?:\([^()]*\)|(?:[\d.]+|[xX])(?:[²³])?))\s*\/\s*((?:\([^()]*\)|(?:[\d.]+|[xX])(?:[²³])?))/g;
+ let match;
+ while((match=re.exec(input))!==null){
+   pieces.push(esc(input.slice(last,match.index)));
+   let a=match[1],b=match[2];
+   const unwrap=t=>t.startsWith('(')&&t.endsWith(')')?t.slice(1,-1):t;
+   pieces.push('<span class="math-frac"><span class="math-num">'+mathSup(unwrap(a))+'</span><span class="math-den">'+mathSup(unwrap(b))+'</span></span>');
+   last=re.lastIndex;
+ }
+ pieces.push(esc(input.slice(last)));
+ // La sustitución se aplica solo a texto escapado (el HTML insertado ya contiene sus propias etiquetas).
+ return pieces.map((part)=>part.startsWith('<span class="math-frac">')?part:mathSup(part)).join('');
+}
+function mathSup(text){return text.replace(/\^(\d+)/g,(_m,n)=>'<sup>'+n+'</sup>')}
+function addStep(title,math,explain,emphasis=false,ruffini=null){
+ const li=document.createElement('li'),st=document.createElement('strong');st.textContent=title;li.append(st);
+ // Presentación adaptable: reservar todo el ancho para pasos con muchas operaciones o Ruffini.
+ // Las etapas siguen su orden original; la decisión visual no modifica el motor algebraico.
+ const lines=math?String(math).split('\n'):[];
+ const longest=Math.max(0,...lines.map(line=>line.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g,'$1/$2').length));
+ if(ruffini||lines.length>=3||longest>72||
+     (lines.length===2&&longest>49)||
+     (math&&String(math).includes('\\frac{')&&longest>45))li.classList.add('wide-step');
+ if(ruffini)li.append(makeRuffiniTable(ruffini));
+ if(math){const m=document.createElement('div');m.className='mathline'+(emphasis?' emphasis':'');
+   for(const line of String(math).split('\n')){const span=document.createElement('span');span.className='math-expression';span.innerHTML=renderProcedureMath(line);m.append(span)}
+   li.append(m)}
+ if(explain){const node=document.createElement('p');node.className='step-explain';node.textContent=explain;li.append(node)}
+ $('steps').append(li);
+}
+function renderSteps(eq,s){
+ $('steps').replaceChildren();
+ let previousMath=eq.source;
+ const canon=text=>String(text||'').replace(/\s+/g,'').replace(/[−–—]/g,'-').replace(/²/g,'^2').replace(/³/g,'^3');
+ function present(title,math,note,emphasis=false,ruffini=null){
+   if(!math&&!note&&!ruffini)return;
+   // Se descarta solamente una repetición literal consecutiva. Un desarrollo nuevo nunca se omite por su título.
+   if(math&&!ruffini&&canon(math)===canon(previousMath))return;
+   addStep(title,math,note,emphasis,ruffini);
+   if(math)previousMath=math;
+ }
+ const parts=eq.source.split('=');
+ const reducedSides=`${polyText(eq.l)} = ${polyText(eq.r)}`;
+ let clearedDenominators=false, denominatorScale=1;
+ if(eq.source.includes('/')){
+   const denoms=[...eq.source.matchAll(/\/\s*\(?\s*(\d+)\s*\)?/g)].map(m=>Number(m[1]));
+   const divisions=(eq.source.match(/\//g)||[]).length;
+   if(denoms.length===divisions&&denoms.every(n=>Number.isSafeInteger(n)&&n>0)){
+     const gcd=(a,b)=>{while(b){const t=a%b;a=b;b=t}return a};
+     const lcm=denoms.reduce((v,n)=>v/gcd(v,n)*n,1);
+     if(Number.isSafeInteger(lcm)&&lcm>1&&lcm<=100000){
+       present('Multiplicar ambos lados por el MCM',`${fmt(lcm)} × (${parts[0].trim()}) = ${fmt(lcm)} × (${parts[1].trim()})`, `El MCM de los denominadores es ${fmt(lcm)}. Se aplica a ambos lados completos de la ecuación.`);
+       present('Eliminar denominadores y simplificar',`${polyText(scale(eq.l,lcm))} = ${polyText(scale(eq.r,lcm))}`,'Se simplifican las fracciones y se realizan las multiplicaciones correspondientes.');
+       clearedDenominators=true; denominatorScale=lcm;
+     }
+   }
+ }
+ const needsWork=parts.some(side=>/[()/*]/.test(side)||((side.match(/x/gi)||[]).length>1));
+ const initial=clearedDenominators?`${polyText(scale(eq.l,1))} = ${polyText(scale(eq.r,1))}`:eq.source;
+ if(needsWork&&!clearedDenominators&&canon(initial).replace(/\*/g,'')!==canon(reducedSides))
+   present('Aplicar operaciones y reducir términos',reducedSides,'Se desarrollan los productos, paréntesis y sumas de términos semejantes, conservando la igualdad.');
+ if(s.kind==='identity'){
+   present('Reducir ambos lados','0 = 0','Al trasladar los términos, ambos lados se cancelan.');
+   present('Conjunto solución','S = ℝ','La igualdad se verifica para todo número real.',true);return;
+ }
+ if(s.kind==='none'){
+   present('Reducir ambos lados',`${polyText(eq.p)} = 0`,'La variable se cancela y queda una igualdad imposible entre constantes.');
+   present('Conjunto solución','S = ∅','No existe ningún número real que satisfaga la igualdad.',true);return;
+ }
+ if(s.degree===1){
+   const left=scale(eq.l,denominatorScale),right=scale(eq.r,denominatorScale);
+   const a=left[1]||0,b=left[0]||0,c=right[1]||0,d=right[0]||0;
+   const coefficient=a-c,ind=d-b,root=ind/coefficient;
+   if(Math.abs(c)>EPS){
+     present('Reunir los términos con x en un lado',`${polyText([b,coefficient])} = ${fmt(d)}`,'Se resta el término con x del lado derecho en ambos lados.');
+   }
+   if(Math.abs(b)>EPS){
+     present('Trasladar los términos independientes',`${polyText([0,coefficient])} = ${fmt(ind)}`,'Se suma o resta la constante necesaria a ambos lados para aislar el término con x.');
+   }
+   if(Math.abs(coefficient-1)>EPS){
+     present('Dividir entre el coeficiente de x',`x = ${fmt(ind)}/${fmt(coefficient)}`,'Se dividen ambos lados entre el coeficiente de x, que es distinto de cero.');
+   }
+   if(canon(eq.source)!==canon(`x = ${fmt(root)}`))present('Obtener el valor de x',`x = ${fmt(root)}`,'Se simplifica el cociente para obtener la solución.');
+ }else{
+   const alreadyZero=isZero(eq.r[0])&&degree(eq.r)===0&&eq.p.every((v,i)=>Math.abs(v-(eq.l[i]||0))<EPS);
+   if(!alreadyZero)present('Reunir todos los términos e igualar a cero',`${polyText(eq.p)} = 0`,'Se trasladan los términos del lado derecho al izquierdo y se reducen los términos semejantes.');
+   for(const st of s.trace)present(st.title,st.math,st.note,false,st.ruffini||null);
+ }
+ if(s.roots.length){
+   const lines=s.roots.map(x=>{const l=pv(eq.l,x),r=pv(eq.r,x);return `x = ${fmt(x)}  →  Lado izquierdo = ${fmt(l)} ; Lado derecho = ${fmt(r)}`});
+   present('Comprobar las soluciones',lines.join('\n'),'Se sustituyen las raíces en la igualdad original y se comparan los dos lados; los valores irracionales pueden mostrar pequeñas diferencias por el redondeo.');
+ }
+ present('Escribir el conjunto solución en ℝ',formatSolution(s.roots,s.kind,s.approxRoots||[]),s.usedNumerical?'El símbolo ≈ distingue las soluciones calculadas aproximadamente.':'Se reúnen las raíces reales distintas.',true);
+}
+function pv(p,x){let y=0;for(let i=p.length-1;i>=0;i--)y=y*x+p[i];return y}
+function chooseRange(eq,s){let roots=s.roots.slice(),xmin=-10,xmax=10;if(roots.length){xmin=Math.min(...roots)-5;xmax=Math.max(...roots)+5;if(xmax-xmin<10){const mid=(xmin+xmax)/2;xmin=mid-5;xmax=mid+5}}const vertexCandidates=[];for(const p of [eq.l,eq.r])if(degree(p)===2&&Math.abs(p[2])>EPS)vertexCandidates.push(-p[1]/(2*p[2]));if(vertexCandidates.length){xmin=Math.min(xmin,...vertexCandidates)-1;xmax=Math.max(xmax,...vertexCandidates)+1}xmin=Math.max(-50,xmin);xmax=Math.min(50,xmax);return{xmin,xmax}}
+let graphView=null;
+function graphInitialView(eq,s){
+ const {xmin,xmax}=chooseRange(eq,s), ys=[];
+ for(let i=0;i<=350;i++){const x=xmin+(xmax-xmin)*i/350;const a=pv(eq.l,x),b=pv(eq.r,x);if(Number.isFinite(a))ys.push(a);if(Number.isFinite(b))ys.push(b)}
+ // Include intersection ordinates; prioritize legibility around actual roots.
+ for(const x of s.roots){const y=pv(eq.l,x);if(Number.isFinite(y))ys.push(y)}
+ let ymin=ys.length?Math.min(...ys):-10,ymax=ys.length?Math.max(...ys):10;
+ if(!Number.isFinite(ymin)||!Number.isFinite(ymax)){ymin=-10;ymax=10}
+ if(ymax-ymin<1){const mid=(ymin+ymax)/2;ymin=mid-5;ymax=mid+5}
+ const margin=(ymax-ymin)*.12;
+ return {xmin,xmax,ymin:ymin-margin,ymax:ymax+margin};
+}
+function draw(eq,s){
+ const c=$('plot'),ctx=c.getContext('2d'),dpr=Math.min(3,window.devicePixelRatio||1);
+ const w=c.clientWidth||680,h=Math.max(245,Math.round(w*430/680));
+ c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+ if(!graphView)graphView=graphInitialView(eq,s);
+ const {xmin,xmax,ymin,ymax}=graphView, X=x=>(x-xmin)/(xmax-xmin)*w,Y=y=>h-(y-ymin)/(ymax-ymin)*h;
+ ctx.fillStyle='#0b1c30';ctx.fillRect(0,0,w,h);
+ const niceStep=r=>{const mag=10**Math.floor(Math.log10(Math.max(r,1e-12))),f=r/mag;return mag*(f<=1?1:f<=2?2:f<=5?5:10)};
+ const sx=niceStep((xmax-xmin)/9),sy=niceStep((ymax-ymin)/7);
+ ctx.strokeStyle='#29425a';ctx.lineWidth=1;ctx.font='11px system-ui';ctx.fillStyle='#9bb6cb';
+ for(let x=Math.ceil(xmin/sx)*sx, k=0;x<=xmax&&k<150;x+=sx,k++){
+  const px=X(x);ctx.beginPath();ctx.moveTo(px,0);ctx.lineTo(px,h);ctx.stroke();ctx.fillText(fmt(x),Math.max(3,Math.min(w-45,px+3)),h-7);
+ }
+ for(let y=Math.ceil(ymin/sy)*sy,k=0;y<=ymax&&k<150;y+=sy,k++){
+  const py=Y(y);ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(w,py);ctx.stroke();if(py>12&&py<h-16)ctx.fillText(fmt(y),5,py-3);
+ }
+ ctx.strokeStyle='#748fa8';ctx.lineWidth=1.5;
+ if(xmin<=0&&xmax>=0){ctx.beginPath();ctx.moveTo(X(0),0);ctx.lineTo(X(0),h);ctx.stroke()}
+ if(ymin<=0&&ymax>=0){ctx.beginPath();ctx.moveTo(0,Y(0));ctx.lineTo(w,Y(0));ctx.stroke()}
+ function curve(p,color){
+  ctx.strokeStyle=color;ctx.lineWidth=2.6;ctx.beginPath();let open=false;
+  for(let i=0;i<=Math.max(600,Math.floor(w*1.5));i++){
+   const x=xmin+(xmax-xmin)*i/Math.max(600,Math.floor(w*1.5)),y=pv(p,x),py=Y(y),px=X(x);
+   if(!Number.isFinite(py)||Math.abs(py)>1e7){open=false;continue}
+   if(!open)ctx.moveTo(px,py);else ctx.lineTo(px,py);open=true;
+  }ctx.stroke();
+ }
+ curve(eq.l,'#63d9ed');curve(eq.r,'#c1b4ff');
+ for(const x of s.roots){
+  const y=pv(eq.l,x),px=X(x),py=Y(y);
+  if(!Number.isFinite(px)||!Number.isFinite(py)||px<0||px>w||py<0||py>h)continue;
+  ctx.beginPath();ctx.fillStyle='#ffd18c';ctx.strokeStyle='#392b1b';ctx.lineWidth=1.5;ctx.arc(px,py,5.5,0,2*Math.PI);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#ffe0a9';ctx.font='12px system-ui';ctx.fillText('x = '+fmt(x),Math.max(5,Math.min(w-110,px+9)),Math.max(15,Math.min(h-9,py-10)));
+ }
+}
+function graphZoom(factor,px=.5,py=.5){
+ if(!current||!graphView)return;
+ const v=graphView,dx=v.xmax-v.xmin,dy=v.ymax-v.ymin;
+ if(dx*factor<1e-5||dx*factor>1e10||dy*factor<1e-7||dy*factor>1e16)return;
+ const cx=v.xmin+px*dx,cy=v.ymax-py*dy;
+ graphView={xmin:cx-px*dx*factor,xmax:cx+(1-px)*dx*factor,ymin:cy-(1-py)*dy*factor,ymax:cy+py*dy*factor};
+ draw(current.eq,current.s);
+}
+function graphPan(dx,dy){if(!current||!graphView)return;const v=graphView,w=$('plot').clientWidth||680,h=$('plot').clientHeight||430,stepx=dx*(v.xmax-v.xmin)/w,stepy=dy*(v.ymax-v.ymin)/h;graphView={xmin:v.xmin-stepx,xmax:v.xmax-stepx,ymin:v.ymin+stepy,ymax:v.ymax+stepy};draw(current.eq,current.s)}
+function graphExpressionLabels(eq){
+ const halves=eq.source.split('=');$('graphLeft').innerHTML=readInputMath(halves[0].trim());$('graphRight').innerHTML=readInputMath(halves[1].trim());
+}
+
+let current=null;
+function solve(){try{const eq=readEquation($('expr').value),s=solveData(eq);current={eq,s};$('error').textContent='';$('output').classList.remove('hidden');$('math').classList.add('read-original');$('math').innerHTML=readInputMath(eq.source);$('type').textContent='TIPO · '+s.type;$('reduced').textContent=polyText(eq.p)+' = 0';$('disc').textContent='Grado '+s.degree;$('solution').textContent=formatSolution(s.roots,s.kind,s.approxRoots||[]);renderSteps(eq,s);graphExpressionLabels(eq);graphView=graphInitialView(eq,s);draw(eq,s);$('checkresult').textContent=''}catch(e){current=null;$('error').textContent=e.message;$('output').classList.add('hidden')}}
+
+// Generadores de prácticas: un clic crea un nuevo problema del tipo seleccionado.
+// Cada expresión se construye desde coeficientes y factores conocidos para que
+// la ruta pedagógica elegida sea válida y las raíces se puedan comprobar.
+const practiceHistory=new Map();
+const ri=(lo,hi)=>Math.floor(Math.random()*(hi-lo+1))+lo;
+const pick=arr=>arr[ri(0,arr.length-1)];
+const nonzero=(lo,hi)=>{let n;do{n=ri(lo,hi)}while(n===0);return n};
+const signed=(n)=>n<0?' - '+Math.abs(n):' + '+n;
+function polynomialInput(coeff){
+ let out='';for(let k=coeff.length-1;k>=0;k--){const n=coeff[k];if(!n)continue;
+ const sign=n<0?'-':'+';const abs=Math.abs(n);
+ const part=(k===0||abs!==1?abs:'')+(k?'x'+(k>1?'^'+k:''):'');
+ out+=(out?(sign==='-'?' - ':' + '):(sign==='-'?'-':''))+part;
+ }return out||'0';
+}
+function multiplyCoeff(a,b){const c=Array(a.length+b.length-1).fill(0);a.forEach((v,i)=>b.forEach((w,j)=>c[i+j]+=v*w));return c}
+function generatedLineal(){
+ const x=nonzero(-8,8),a=nonzero(-6,6);let c;
+ do{c=nonzero(-6,6)}while(c===a);
+ const b=ri(-9,9),d=(a-c)*x+b;
+ return `${polynomialInput([b,a])} = ${polynomialInput([d,c])}`;
+}
+function generatedFraction(){
+ const q=pick([2,3,4,5]),t=pick([2,3,4,5]);let a,c;
+ do{a=nonzero(-5,5);c=nonzero(-5,5)}while(a*t===c*q);
+ const b=ri(-8,8),e=ri(-8,8);
+ return `(${polynomialInput([b,a])})/${q} = (${polynomialInput([e,c])})/${t}`;
+}
+function generatedQuadratic(){
+ const r=nonzero(-6,6),s=nonzero(-6,6),factor=pick([1,1,1,2,3]);
+ return polynomialInput([factor*r*s,-factor*(r+s),factor])+' = 0';
+}
+function generatedDifferenceSquares(){
+ // (ax)^2-b^2, con posibilidad de un factor común numérico.
+ const a=pick([1,2,3,4]),b=pick([1,2,3,4,5,6]),scale=pick([1,1,1,2,3]);
+ return polynomialInput([-scale*b*b,0,scale*a*a])+' = 0';
+}
+function generatedGrouping(){
+ // (x+r)(x²-k²) tiene agrupación visible: x²(x+r)-k²(x+r).
+ const r=nonzero(-5,5),k=pick([1,2,3,4]);
+ return polynomialInput([-r*k*k,-k*k,r,1])+' = 0';
+}
+function generatedRuffini(){
+ // No fabricar el trinomio por agrupación obvia; se busca Ruffini sucesivo.
+ for(let tries=0;tries<200;tries++){
+   const n=pick([3,3,4]);let rs=[];
+   while(rs.length<n){const t=nonzero(-5,5);if(!rs.includes(t))rs.push(t)}
+   let p=[1];for(const r of rs)p=multiplyCoeff(p,[-r,1]);
+   if(p.some(v=>v===0))continue;
+   if(n===3&&Math.abs(p[3]*p[0]-p[2]*p[1])<1e-8)continue;
+   return polynomialInput(p)+' = 0';
+ }
+ return 'x^3 - 6x^2 + 11x - 6 = 0';
+}
+function generatedBiquadratic(){
+ const u=pick([1,4,9,16]),v=pick([1,4,9,16].filter(n=>n!==u));
+ const scale=pick([1,1,2]);
+ return polynomialInput([scale*u*v,0,-scale*(u+v),0,scale])+' = 0';
+}
+function generatedCubes(sign=-1){
+ const a=pick([1,2,3]),b=pick([1,2,3,4,5]);
+ const scale=pick([1,1,2]);
+ return polynomialInput([sign*scale*b**3,0,0,scale*a**3])+' = 0';
+}
+function generatePracticeEquation(kind){
+ const builders={'Lineal':generatedLineal,'Lineal con fracciones':generatedFraction,
+ 'Cuadrática':generatedQuadratic,'Diferencia de cuadrados':generatedDifferenceSquares,'Agrupación':generatedGrouping,
+ 'Ruffini':generatedRuffini,'Bicuadrática':generatedBiquadratic,
+ 'Diferencia de cubos':()=>generatedCubes(-1),'Suma de cubos':()=>generatedCubes(1)};
+ const build=builders[kind];if(!build)throw Error('Tipo de ejercicio desconocido.');
+ let recent=practiceHistory.get(kind)||[],value='';
+ for(let i=0;i<75;i++){
+   value=build();if(!recent.includes(value)&&value!==$('expr').value)break;
+ }
+ recent=[...recent,value].slice(-12);practiceHistory.set(kind,recent);
+ return value;
+}
+
+$('form').addEventListener('submit',e=>{e.preventDefault();solve()});$('clear').addEventListener('click',()=>{$('expr').value='';$('error').textContent='';$('output').classList.add('hidden');graphView=null;$('expr').focus()});document.querySelectorAll('.example').forEach(b=>b.addEventListener('click',()=>{const kind=b.textContent.trim();$('expr').value=generatePracticeEquation(kind);solve()}));$('checkform').addEventListener('submit',e=>{e.preventDefault();if(!current)return;const x=Number($('xcheck').value);if(!$('xcheck').value.trim()||!Number.isFinite(x)){ $('checkresult').textContent='Introduce un número real válido.';return}const L=pv(current.eq.l,x),R=pv(current.eq.r,x),ok=Math.abs(L-R)<1e-6;$('checkresult').textContent='x = '+fmt(x)+' → Lado izquierdo = '+fmt(L)+', Lado derecho = '+fmt(R)+' → '+(ok?'Sí satisface la ecuación.':'No satisface la ecuación.')});
+const edit=$('expr');let savedStart=edit.value.length,savedEnd=savedStart;function saveSel(){savedStart=edit.selectionStart??edit.value.length;savedEnd=edit.selectionEnd??savedStart}['click','keyup','select','input'].forEach(ev=>edit.addEventListener(ev,saveSel));function insert(str,cursorOffset){const st=document.activeElement===edit?edit.selectionStart:savedStart,en=document.activeElement===edit?edit.selectionEnd:savedEnd;edit.setRangeText(str,st,en,'end');const pos=st+(cursorOffset===undefined?str.length:cursorOffset);edit.focus({preventScroll:true});edit.setSelectionRange(pos,pos);saveSel()}document.querySelectorAll('.math-keyboard .key[data-insert],.math-keyboard .key[data-template]').forEach(k=>{k.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')e.preventDefault()});k.addEventListener('click',()=>insert(k.dataset.insert??k.dataset.template,k.dataset.cursor===undefined?undefined:Number(k.dataset.cursor)))});$('key-back').addEventListener('click',()=>{const st=savedStart,en=savedEnd;if(st===en&&st===0)return;edit.setRangeText('',st===en?st-1:st,en,'start');edit.focus({preventScroll:true});saveSel()});$('key-left').addEventListener('click',()=>{const at=Math.max(0,savedStart-1);edit.focus({preventScroll:true});edit.setSelectionRange(at,at);saveSel()});$('key-right').addEventListener('click',()=>{const at=Math.min(edit.value.length,savedEnd+1);edit.focus({preventScroll:true});edit.setSelectionRange(at,at);saveSel()});const graphCanvas=$('plot'),pointers=new Map();let lastPointer=null,lastDistance=null;
+const graphPoint=e=>{const r=graphCanvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+const pointDistance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+graphCanvas.addEventListener('pointerdown',e=>{if(!current)return;e.preventDefault();graphCanvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,graphPoint(e));lastPointer=graphPoint(e);lastDistance=null});
+graphCanvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId)||!current)return;e.preventDefault();const now=graphPoint(e),prev=pointers.get(e.pointerId);pointers.set(e.pointerId,now);const items=[...pointers.values()];if(items.length===1){graphPan(now.x-prev.x,now.y-prev.y);lastPointer=now;lastDistance=null}else if(items.length===2){const dist=pointDistance(items[0],items[1]),mid={x:(items[0].x+items[1].x)/2,y:(items[0].y+items[1].y)/2};if(lastDistance)graphZoom(Math.max(.4,Math.min(2.5,lastDistance/dist)),mid.x/graphCanvas.clientWidth,mid.y/graphCanvas.clientHeight);lastDistance=dist;lastPointer=null}});
+function endGraphPointer(e){pointers.delete(e.pointerId);lastPointer=null;lastDistance=null}graphCanvas.addEventListener('pointerup',endGraphPointer);graphCanvas.addEventListener('pointercancel',endGraphPointer);graphCanvas.addEventListener('lostpointercapture',endGraphPointer);
+graphCanvas.addEventListener('wheel',e=>{if(!current)return;e.preventDefault();const r=graphCanvas.getBoundingClientRect();graphZoom(Math.exp(Math.max(-150,Math.min(150,e.deltaY))*.0015),(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height)},{passive:false});
+$('graphZoomIn').addEventListener('click',()=>graphZoom(.75));$('graphZoomOut').addEventListener('click',()=>graphZoom(1/.75));$('graphReset').addEventListener('click',()=>{if(current){graphView=graphInitialView(current.eq,current.s);draw(current.eq,current.s)}});
+window.addEventListener('resize',()=>{if(current)draw(current.eq,current.s)});solve();
+</script>
+</body></html>
